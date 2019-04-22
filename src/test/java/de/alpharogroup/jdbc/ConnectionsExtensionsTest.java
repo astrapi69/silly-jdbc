@@ -49,7 +49,7 @@ public class ConnectionsExtensionsTest
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	@Test
+	@Test(enabled = false)
 	public void testGetH2Connection() throws ClassNotFoundException, SQLException
 	{
 		String path;
