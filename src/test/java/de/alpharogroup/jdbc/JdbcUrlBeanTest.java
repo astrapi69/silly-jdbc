@@ -22,7 +22,7 @@ import org.testng.annotations.Test;
 import de.alpharogroup.jdbc.JdbcUrlBean;
 
 /**
- * The test class for {@link JdbcUrlBean}.
+ * The test class for {@link JdbcUrlBean}
  */
 public class JdbcUrlBeanTest
 {
