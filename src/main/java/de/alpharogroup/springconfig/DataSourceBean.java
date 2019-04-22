@@ -21,7 +21,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * The class {@link DataSourceBean} encapsulates the data for a {@link DataSource} object
+ * The class {@link DataSourceBean} encapsulates the data for a  <code>DataSource</code> object
  */
 @Data
 @NoArgsConstructor
