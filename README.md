@@ -57,14 +57,14 @@ Than you can add the dependency to your dependencies:
 
 	<properties>
 			...
-		<!-- silly-jdbc version -->
+		<!-- SILLY-JDBC version -->
 		<silly-jdbc.version>5.2</silly-jdbc.version>
 			...
 	</properties>
 			...
 		<dependencies>
 			...
-			<!-- silly-jdbc DEPENDENCY -->
+			<!-- SILLY-JDBC DEPENDENCY -->
 			<dependency>
 				<groupId>de.alpharogroup</groupId>
 				<artifactId>silly-jdbc</artifactId>
