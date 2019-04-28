@@ -1,6 +1,3 @@
-# silly-jdbc
- 
-
 # Overview
 
 <div align="center">
