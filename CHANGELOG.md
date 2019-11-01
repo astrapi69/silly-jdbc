@@ -1,10 +1,17 @@
 ## Change log
 ----------------------
 
+Version 5.4
+-------------
+
+ADDED:
+
+- created new connection classes for H2, MySql and PostgreSQL
+
 Version 5.3
 -------------
 
-CHANGED
+CHANGED:
 
 - automate closing all streams and connections with the try construct
 - made method arguments null safe
