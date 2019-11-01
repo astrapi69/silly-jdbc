@@ -24,56 +24,55 @@
  */
 package de.alpharogroup.jdbc;
 
-import static org.testng.AssertJUnit.assertNotNull;
-
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.meanbean.factories.ObjectCreationException;
-import org.meanbean.test.BeanTestException;
-import org.meanbean.test.BeanTester;
-import org.testng.annotations.Test;
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
 
 /**
- * The unit test class for the class {@link ConnectionsExtensions}.
+ * The class {@link H2ConnectionsExtensions} have convenience methods to create and connect to H2
+ * databases
+ *
+ * @author Asterios Raptis
  */
-public class ConnectionsExtensionsTest
+@UtilityClass
+public final class H2ConnectionsExtensions
 {
 
+	/** H2-database constants. */
+	/** Constant for the drivername from H2-database. */
+	public static final String DRIVERNAME = "org.h2.Driver";
+
+	/** Constant for the urlprefix from H2-database. */
+	public static final String URL_PREFIX = "jdbc:h2";
+
 	/**
-	 * Test method for {@link ConnectionsExtensions#getH2Connection(String, String, String, String)}
+	 * Gets the H2 connection.
 	 *
+	 * @param path
+	 *            the path
+	 * @param databaseName
+	 *            the database name
+	 * @param dbuser
+	 *            the dbuser
+	 * @param dbpasswort
+	 *            the dbpasswort
+	 * @return the H2 connection
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	@Test(enabled = false)
-	public void testGetH2Connection() throws ClassNotFoundException, SQLException
+	public static Connection getConnection(final @NonNull String path,
+		final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
 	{
-		String path;
-		String databaseName;
-		String dbuser;
-		String dbpasswort;
-		Connection connection;
-
-		path = "file:~/";
-		databaseName = "resourcebundles";
-		dbuser = "sa";
-		dbpasswort = "";
-		connection = H2ConnectionsExtensions.getConnection(path, databaseName, dbuser, dbpasswort);
-		assertNotNull(connection);
-	}
-
-	/**
-	 * Test method for {@link ConnectionsExtensions}
-	 */
-	@Test(expectedExceptions = { BeanTestException.class, ObjectCreationException.class })
-	public void testWithBeanTester()
-	{
-		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(ConnectionsExtensions.class);
+		final String url = URL_PREFIX + ":" + path + databaseName;
+		Class.forName(DRIVERNAME);
+		return DriverManager.getConnection(url, dbuser, dbpasswort);
 	}
 
 }

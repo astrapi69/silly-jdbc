@@ -131,6 +131,9 @@
 								<!-- explicit constant classes with only constants -->
 								<!-- explicit delegation classes -->
 								<exclude>de/alpharogroup/jdbc/ConnectionsExtensions.class</exclude>
+								<exclude>de/alpharogroup/jdbc/H2ConnectionsExtensions.class</exclude>
+								<exclude>de/alpharogroup/jdbc/MySqlConnectionsExtensions.class</exclude>
+								<exclude>de/alpharogroup/jdbc/PostgreSQLConnectionsExtensions.class</exclude>
 							</excludes>
 						</instrumentation>
 					</configuration>
