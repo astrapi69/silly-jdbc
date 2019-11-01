@@ -11,6 +11,7 @@
 	</parent>
 
 	<artifactId>silly-jdbc</artifactId>
+	<version>5.4</version>
 
 	<properties>
 		<!-- SPRING versions -->
