@@ -35,6 +35,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -91,37 +92,24 @@ public final class ConnectionsExtensions
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located
 	 */
-	public static void dropPostgreSQLDatabase(final String hostname, final String databaseName,
-		final String dbuser, final String dbpasswort) throws SQLException, ClassNotFoundException
+	public static void dropPostgreSQLDatabase(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort) throws SQLException, ClassNotFoundException
 	{
 		if (existsPostgreSQLDatabase(hostname, databaseName, dbuser, dbpasswort))
 		{
-			Connection connection = null;
-			Statement stmt = null;
-			try
+			try (
+				Connection connection = ConnectionsExtensions.getPostgreSQLConnection(hostname, "",
+					dbuser, dbpasswort);
+				Statement stmt = connection.createStatement())
 			{
-				connection = ConnectionsExtensions.getPostgreSQLConnection(hostname, "", dbuser,
-					dbpasswort);
-				stmt = connection.createStatement();
+
 
 				final StringBuilder sb = new StringBuilder();
 				sb.append("DROP DATABASE ");
 				sb.append(databaseName);
 
 				stmt.executeUpdate(sb.toString());
-				stmt.close();
-				connection.close();
-			}
-			finally
-			{
-				if (stmt != null && !stmt.isClosed())
-				{
-					stmt.close();
-				}
-				if (connection != null && !connection.isClosed())
-				{
-					connection.close();
-				}
 			}
 		}
 	}
@@ -139,8 +127,8 @@ public final class ConnectionsExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static void executeSqlScript(final BufferedReader bufferedReader,
-		final Connection connection) throws IOException, SQLException
+	public static void executeSqlScript(final @NonNull BufferedReader bufferedReader,
+		final @NonNull Connection connection) throws IOException, SQLException
 	{
 		executeSqlScript(bufferedReader, connection, false);
 	}
@@ -160,8 +148,8 @@ public final class ConnectionsExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static void executeSqlScript(final BufferedReader bufferedReader,
-		final Connection connection, final boolean log) throws IOException, SQLException
+	public static void executeSqlScript(final @NonNull BufferedReader bufferedReader,
+		final @NonNull Connection connection, final boolean log) throws IOException, SQLException
 	{
 		final StringBuilder sb = new StringBuilder();
 		String s;
@@ -185,8 +173,8 @@ public final class ConnectionsExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static void executeSqlScript(final Connection connection, final String sqlScript)
-		throws SQLException
+	public static void executeSqlScript(final @NonNull Connection connection,
+		final @NonNull String sqlScript) throws SQLException
 	{
 		executeSqlScript(connection, sqlScript, false);
 	}
@@ -204,33 +192,33 @@ public final class ConnectionsExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static void executeSqlScript(final Connection connection, final String sqlScript,
-		final boolean log) throws SQLException
+	public static void executeSqlScript(final @NonNull Connection connection,
+		final @NonNull String sqlScript, final boolean log) throws SQLException
 	{
 		final String[] inst = sqlScript.split(";");
-
-		final Statement st = connection.createStatement();
-		if (log)
+		try (Statement st = connection.createStatement())
 		{
-			for (final String inst1 : inst)
+			if (log)
 			{
-				if (!inst1.trim().equals(""))
+				for (final String inst1 : inst)
 				{
-					st.executeUpdate(inst1);
+					if (!inst1.trim().equals(""))
+					{
+						st.executeUpdate(inst1);
+					}
+				}
+			}
+			else
+			{
+				for (final String inst1 : inst)
+				{
+					if (!inst1.trim().equals(""))
+					{
+						st.executeUpdate(inst1);
+					}
 				}
 			}
 		}
-		else
-		{
-			for (final String inst1 : inst)
-			{
-				if (!inst1.trim().equals(""))
-				{
-					st.executeUpdate(inst1);
-				}
-			}
-		}
-		st.close();
 	}
 
 	/**
@@ -251,27 +239,27 @@ public final class ConnectionsExtensions
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 */
-	public static boolean existsMySqlDatabase(final String hostname, final String databaseName,
-		final String dbuser, final String dbpasswort) throws SQLException, ClassNotFoundException
+	public static boolean existsMySqlDatabase(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort) throws SQLException, ClassNotFoundException
 	{
-		final List<String> existingDatabases = new ArrayList<>();
-		final Connection connection = ConnectionsExtensions.getMySQLConnection(hostname, "", dbuser,
-			dbpasswort);
-		final DatabaseMetaData meta = connection.getMetaData();
-		final ResultSet rs = meta.getCatalogs();
-		while (rs.next())
+		try (Connection connection = ConnectionsExtensions.getMySQLConnection(hostname, "", dbuser,
+			dbpasswort))
 		{
-			final String existingDatabaseName = rs.getString("TABLE_CAT");
-			existingDatabases.add(existingDatabaseName);
-		}
-		if (existingDatabases.contains(databaseName))
-		{
-			return true;
-		}
-		rs.close();
-		if (connection != null && !connection.isClosed())
-		{
-			connection.close();
+			final DatabaseMetaData meta = connection.getMetaData();
+			try (ResultSet rs = meta.getCatalogs())
+			{
+				final List<String> existingDatabases = new ArrayList<>();
+				while (rs.next())
+				{
+					final String existingDatabaseName = rs.getString("TABLE_CAT");
+					existingDatabases.add(existingDatabaseName);
+				}
+				if (existingDatabases.contains(databaseName))
+				{
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -287,34 +275,44 @@ public final class ConnectionsExtensions
 	 *            the dbuser
 	 * @param dbpasswort
 	 *            the dbpasswort
-	 * @return true, if successful
-	 * @throws ClassNotFoundException
-	 *             is thrown if the Class was not found or could not be located.
-	 * @throws SQLException
-	 *             is thrown if a database access error occurs or this method is called on a closed
-	 *             connection
+	 * @return true, if successful otherwise false
 	 */
-	public static boolean existsPostgreSQLDatabase(final String hostname, final String databaseName,
-		final String dbuser, final String dbpasswort) throws ClassNotFoundException, SQLException
+	public static boolean existsPostgreSQLDatabase(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort)
 	{
-		Connection connection = null;
-		try
+		return existsPostgreSQLDatabase(hostname, POSTGRESQL_PORT, databaseName, dbuser,
+			dbpasswort);
+	}
+
+	/**
+	 * Checks if the given database exists in the Postgresql Database.
+	 *
+	 * @param hostname
+	 *            the hostname
+	 * @param port
+	 *            the port number
+	 * @param databaseName
+	 *            the database name
+	 * @param dbuser
+	 *            the dbuser
+	 * @param dbpasswort
+	 *            the dbpasswort
+	 * @return true, if successful otherwise false
+	 */
+	public static boolean existsPostgreSQLDatabase(final @NonNull String hostname, final int port,
+		final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort)
+	{
+		try (Connection connection = ConnectionsExtensions.getPostgreSQLConnection(hostname, port,
+			databaseName, dbuser, dbpasswort))
 		{
-			connection = ConnectionsExtensions.getPostgreSQLConnection(hostname, databaseName,
-				dbuser, dbpasswort);
+			return true;
 		}
 		catch (final Exception e)
 		{
 			return false;
 		}
-		finally
-		{
-			if (connection != null && !connection.isClosed())
-			{
-				connection.close();
-			}
-		}
-		return true;
 	}
 
 	/**
@@ -335,8 +333,9 @@ public final class ConnectionsExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static Connection getH2Connection(final String path, final String databaseName,
-		final String dbuser, final String dbpasswort) throws ClassNotFoundException, SQLException
+	public static Connection getH2Connection(final @NonNull String path,
+		final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
 	{
 		final String url = H2_PREFIX_URL + ":" + path + databaseName;
 		Class.forName(H2_DRIVERNAME);
@@ -363,9 +362,9 @@ public final class ConnectionsExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static Connection getMySQLConnection(final String hostname, final int portNumber,
-		final String databaseName, final String dbuser, final String dbpasswort)
-		throws ClassNotFoundException, SQLException
+	public static Connection getMySQLConnection(final @NonNull String hostname,
+		final int portNumber, final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
 	{
 		final String url = MYSQL_PREFIX_URL + hostname + ":" + portNumber + "/" + databaseName;
 		Class.forName(MYSQL_DRIVERNAME);
@@ -390,8 +389,9 @@ public final class ConnectionsExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static Connection getMySQLConnection(final String hostname, final String databaseName,
-		final String dbuser, final String dbpasswort) throws ClassNotFoundException, SQLException
+	public static Connection getMySQLConnection(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
 	{
 		return getMySQLConnection(hostname, MYSQL_PORT, databaseName, dbuser, dbpasswort);
 	}
@@ -414,12 +414,11 @@ public final class ConnectionsExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static Connection getPostgreSQLConnection(final String hostname,
-		final String databaseName, final String dbuser, final String dbpasswort)
-		throws ClassNotFoundException, SQLException
+	public static Connection getPostgreSQLConnection(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
 	{
-		return getPostgresSQLConnection(hostname, POSTGRESQL_PORT, databaseName, dbuser,
-			dbpasswort);
+		return getPostgreSQLConnection(hostname, POSTGRESQL_PORT, databaseName, dbuser, dbpasswort);
 	}
 
 	/**
@@ -442,9 +441,9 @@ public final class ConnectionsExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static Connection getPostgresSQLConnection(final String hostname, final int portNumber,
-		final String databaseName, final String dbuser, final String dbpasswort)
-		throws ClassNotFoundException, SQLException
+	public static Connection getPostgreSQLConnection(final @NonNull String hostname,
+		final int portNumber, final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
 	{
 		final StringBuilder sb = new StringBuilder();
 		sb.append(POSTGRESQL_PREFIX_URL);
@@ -475,8 +474,9 @@ public final class ConnectionsExtensions
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 */
-	public static void newMySqlDatabase(final String hostname, final String databaseName,
-		final String dbuser, final String dbpasswort) throws SQLException, ClassNotFoundException
+	public static void newMySqlDatabase(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort) throws SQLException, ClassNotFoundException
 	{
 		newMySqlDatabase(hostname, databaseName, dbuser, dbpasswort, "utf8", "utf8_general_ci");
 	}
@@ -502,21 +502,22 @@ public final class ConnectionsExtensions
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 */
-	public static void newMySqlDatabase(final String hostname, final String databaseName,
-		final String dbuser, final String dbpasswort, final String characterSet,
-		final String collate) throws SQLException, ClassNotFoundException
+	public static void newMySqlDatabase(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort, final @NonNull String characterSet,
+		final @NonNull String collate) throws SQLException, ClassNotFoundException
 	{
 		if (!existsMySqlDatabase(hostname, databaseName, dbuser, dbpasswort))
 		{
-			final Connection connection = ConnectionsExtensions.getMySQLConnection(hostname, "",
-				dbuser, dbpasswort);
-			final Statement stmt = connection.createStatement();
-
-			final String sql = "CREATE DATABASE " + databaseName + " DEFAULT CHARACTER SET "
-				+ characterSet + " COLLATE " + collate;
-			stmt.executeUpdate(sql);
-			stmt.close();
-			connection.close();
+			try (
+				Connection connection = ConnectionsExtensions.getMySQLConnection(hostname, "",
+					dbuser, dbpasswort);
+				Statement stmt = connection.createStatement())
+			{
+				final String sql = "CREATE DATABASE " + databaseName + " DEFAULT CHARACTER SET "
+					+ characterSet + " COLLATE " + collate;
+				stmt.executeUpdate(sql);
+			}
 		}
 	}
 
@@ -541,32 +542,33 @@ public final class ConnectionsExtensions
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 */
-	public static void newPostgreSQLDatabase(final String hostname, final String databaseName,
-		final String dbuser, final String dbpasswort, final String characterSet,
-		final String collate) throws SQLException, ClassNotFoundException
+	public static void newPostgreSQLDatabase(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbuser,
+		final @NonNull String dbpasswort, final @NonNull String characterSet,
+		final @NonNull String collate) throws SQLException, ClassNotFoundException
 	{
 		if (!existsPostgreSQLDatabase(hostname, databaseName, dbuser, dbpasswort))
 		{
-			final Connection connection = ConnectionsExtensions.getPostgreSQLConnection(hostname,
-				"", dbuser, dbpasswort);
-			final Statement stmt = connection.createStatement();
-
-			final StringBuilder sb = new StringBuilder();
-			sb.append("CREATE DATABASE ");
-			sb.append(databaseName);
-			if (characterSet != null && !characterSet.isEmpty())
+			try (
+				Connection connection = ConnectionsExtensions.getPostgreSQLConnection(hostname, "",
+					dbuser, dbpasswort);
+				Statement stmt = connection.createStatement())
 			{
-				sb.append(" DEFAULT CHARACTER SET ");
-				sb.append(characterSet);
-				if (collate != null && !collate.isEmpty())
+				StringBuilder sb = new StringBuilder();
+				sb.append("CREATE DATABASE ");
+				sb.append(databaseName);
+				if (characterSet != null && !characterSet.isEmpty())
 				{
-					sb.append(" COLLATE ");
-					sb.append(collate);
+					sb.append(" DEFAULT CHARACTER SET ");
+					sb.append(characterSet);
+					if (collate != null && !collate.isEmpty())
+					{
+						sb.append(" COLLATE ");
+						sb.append(collate);
+					}
 				}
+				stmt.executeUpdate(sb.toString());
 			}
-			stmt.executeUpdate(sb.toString());
-			stmt.close();
-			connection.close();
 		}
 	}
 

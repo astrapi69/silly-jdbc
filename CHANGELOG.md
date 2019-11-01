@@ -1,8 +1,13 @@
 ## Change log
 ----------------------
 
-Version 5.3-SNAPSHOT
+Version 5.3
 -------------
+
+CHANGED
+
+- automate closing all streams and connections with the try construct
+- javadoc extended
 
 Version 5.2
 -------------
