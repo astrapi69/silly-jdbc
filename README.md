@@ -1,6 +1,3 @@
-# silly-jdbc
- 
-
 # Overview
 
 <div align="center">
@@ -32,11 +29,7 @@ or over ether with:
 
 0x588Aa02De98B1Ef70afeDC3ec5290130a3E5e273
 
-or over flattr:
-  
-<a href="http://flattr.com/thing/4067696/astrapi69silly-jdbc-on-GitHub" target="_blank">
-<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" />
-</a>
+or over donate buttons at the top
 
 ## Note
 
@@ -58,7 +51,7 @@ Than you can add the dependency to your dependencies:
 	<properties>
 			...
 		<!-- SILLY-JDBC version -->
-		<silly-jdbc.version>5.2</silly-jdbc.version>
+		<silly-jdbc.version>5.3</silly-jdbc.version>
 			...
 	</properties>
 			...
@@ -72,6 +65,24 @@ Than you can add the dependency to your dependencies:
 			</dependency>
 			...
 		</dependencies>
+		
+	
+## gradle dependency
+
+Add the following gradle dependency to your project `build.gradle` in the dependencies section if you want to import the core functionality of silly-jdbc:
+
+```
+ext {
+			...
+    sillyJdbcVersion = '5.3'
+			...
+}
+dependencies {
+			...
+	compile 'de.alpharogroup:silly-jdbc:${sillyJdbcVersion}'
+			...
+}
+```
 
 ## Semantic Versioning
 

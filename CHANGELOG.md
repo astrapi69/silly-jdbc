@@ -1,6 +1,15 @@
 ## Change log
 ----------------------
 
+Version 5.3
+-------------
+
+CHANGED
+
+- automate closing all streams and connections with the try construct
+- made method arguments null safe
+- javadoc extended
+
 Version 5.2
 -------------
 
