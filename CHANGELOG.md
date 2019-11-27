@@ -4,6 +4,10 @@
 Version 5.6-SNAPSHOT
 -------------
 
+ADDED:
+
+- created new factory method for create PostgreSQL database from properties
+
 Version 5.5
 -------------
 
