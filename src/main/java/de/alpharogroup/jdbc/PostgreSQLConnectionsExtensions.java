@@ -28,6 +28,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -54,6 +55,12 @@ public final class PostgreSQLConnectionsExtensions
 
 	/** Constant for the default user from PostgreSQL-database. */
 	public static final String POSTGRESQL_DEFAULT_USER = "postgres";
+
+	public static final String APP_DB_HOST = "app.db-host";
+	public static final String APP_DB_PORT = "app.db-port";
+	public static final String APP_DB_NAME = "app.db-name";
+	public static final String APP_DB_USERNAME = "app.db-username";
+	public static final String APP_DB_PASSWORD = "app.db-password";
 
 	/**
 	 * Drops the given PostgreSQL database with the given databaseName if it does exist.
@@ -309,7 +316,7 @@ public final class PostgreSQLConnectionsExtensions
 	}
 
 	/**
-	 * Creates the a PostgreSQL database with the given databaseName if it does not exist
+	 * Creates a new PostgreSQL database with the given databaseName if it does not exist
 	 *
 	 * @param hostname
 	 *            the host name
@@ -336,7 +343,7 @@ public final class PostgreSQLConnectionsExtensions
 	}
 
 	/**
-	 * Creates the a PostgreSQL database with the given databaseName if it does not exist
+	 * Creates a new PostgreSQL database with the given databaseName if it does not exist
 	 *
 	 * @param hostname
 	 *            the host name
@@ -361,7 +368,7 @@ public final class PostgreSQLConnectionsExtensions
 	}
 
 	/**
-	 * Creates the a PostgreSQL database with the given databaseName if it does not exist with the
+	 * Creates a new PostgreSQL database with the given databaseName if it does not exist with the
 	 * default port, user and password
 	 *
 	 * @param hostname
@@ -379,6 +386,29 @@ public final class PostgreSQLConnectionsExtensions
 	{
 		PostgreSQLConnectionsExtensions.newDatabase(hostname, databaseName, POSTGRESQL_DEFAULT_USER,
 			POSTGRESQL_DEFAULT_USER);
+	}
+
+
+	/**
+	 * Creates a new PostgreSQL database from the given properties
+	 *
+	 * @param properties
+	 *            the properties that contains all relevant data
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 * @throws ClassNotFoundException
+	 *             is thrown if the Class was not found or could not be located
+	 */
+	public static void newDatabase(final @NonNull Properties properties)
+		throws SQLException, ClassNotFoundException
+	{
+		String host = properties.getProperty(APP_DB_HOST);
+		int port = Integer.valueOf(properties.getProperty(APP_DB_PORT));
+		String dbName = properties.getProperty(APP_DB_NAME);
+		String dbUser = properties.getProperty(APP_DB_USERNAME);
+		String dbPw = properties.getProperty(APP_DB_PASSWORD);
+		PostgreSQLConnectionsExtensions.newDatabase(host, port, dbName, dbUser, dbPw);
 	}
 
 }

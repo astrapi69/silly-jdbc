@@ -1,6 +1,13 @@
 ## Change log
 ----------------------
 
+Version 5.6
+-------------
+
+ADDED:
+
+- created new factory method for create PostgreSQL database from properties
+
 Version 5.5
 -------------
 
