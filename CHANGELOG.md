@@ -4,6 +4,14 @@
 Version 5.5-SNAPSHOT
 -------------
 
+ADDED:
+
+- created new factory methods for create PostgreSQL databases
+
+CHANGED:
+
+- update of spring dependency to version 5.2.1.RELEASE
+
 Version 5.4
 -------------
 
