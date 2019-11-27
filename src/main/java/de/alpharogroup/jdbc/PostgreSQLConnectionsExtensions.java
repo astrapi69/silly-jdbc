@@ -34,7 +34,7 @@ import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link PostgreSQLConnectionsExtensions} have convenience methods to create and connect
- * to postgresql databases.
+ * to postgresql databases
  *
  * @author Asterios Raptis
  */
@@ -51,6 +51,9 @@ public final class PostgreSQLConnectionsExtensions
 
 	/** Constant for the port where the PostgreSQL-database listen. */
 	public static final int POSTGRESQL_PORT = 5432;
+
+	/** Constant for the default user from PostgreSQL-database. */
+	public static final String POSTGRESQL_DEFAULT_USER = "postgres";
 
 	/**
 	 * Drops the given PostgreSQL database with the given databaseName if it does exist.
@@ -253,38 +256,38 @@ public final class PostgreSQLConnectionsExtensions
 	}
 
 	/**
-	 * Creates the a PostgreSQL database with the given databaseName if it does not exist.
+	 * Creates a new PostgreSQL database with the given database name if it does not exist
 	 *
 	 * @param hostname
-	 *            the hostname
+	 *            the host name
 	 * @param portNumber
 	 *            the port number
 	 * @param databaseName
 	 *            the database name
-	 * @param dbuser
-	 *            the dbuser
-	 * @param dbpasswort
-	 *            the dbpasswort
+	 * @param dbUser
+	 *            the database user
+	 * @param dbPassword
+	 *            the database password
 	 * @param characterSet
-	 *            the character set
+	 *            the character set for the new database
 	 * @param collate
-	 *            the collate
+	 *            the collate for the new database
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 * @throws ClassNotFoundException
-	 *             is thrown if the Class was not found or could not be located.
+	 *             is thrown if the Class was not found or could not be located
 	 */
 	public static void newDatabase(final @NonNull String hostname, final int portNumber,
-		final @NonNull String databaseName, final @NonNull String dbuser,
-		final @NonNull String dbpasswort, final @NonNull String characterSet,
+		final @NonNull String databaseName, final @NonNull String dbUser,
+		final @NonNull String dbPassword, final @NonNull String characterSet,
 		final @NonNull String collate) throws SQLException, ClassNotFoundException
 	{
-		if (!existsDatabase(hostname, portNumber, databaseName, dbuser, dbpasswort))
+		if (!existsDatabase(hostname, portNumber, databaseName, dbUser, dbPassword))
 		{
 			try (
 				Connection connection = PostgreSQLConnectionsExtensions.getConnection(hostname,
-					portNumber, "", dbuser, dbpasswort);
+					portNumber, "", dbUser, dbPassword);
 				Statement stmt = connection.createStatement())
 			{
 				StringBuilder sb = new StringBuilder();
@@ -303,6 +306,79 @@ public final class PostgreSQLConnectionsExtensions
 				stmt.executeUpdate(sb.toString());
 			}
 		}
+	}
+
+	/**
+	 * Creates the a PostgreSQL database with the given databaseName if it does not exist
+	 *
+	 * @param hostname
+	 *            the host name
+	 * @param portNumber
+	 *            the port number
+	 * @param databaseName
+	 *            the database name
+	 * @param dbUser
+	 *            the database user
+	 * @param dbPassword
+	 *            the database password
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 * @throws ClassNotFoundException
+	 *             is thrown if the Class was not found or could not be located
+	 */
+	public static void newDatabase(final @NonNull String hostname, final int portNumber,
+		final @NonNull String databaseName, final @NonNull String dbUser,
+		final @NonNull String dbPassword) throws SQLException, ClassNotFoundException
+	{
+		PostgreSQLConnectionsExtensions.newDatabase(hostname, portNumber, databaseName, dbUser,
+			dbPassword, "", "");
+	}
+
+	/**
+	 * Creates the a PostgreSQL database with the given databaseName if it does not exist
+	 *
+	 * @param hostname
+	 *            the host name
+	 * @param databaseName
+	 *            the database name
+	 * @param dbUser
+	 *            the database user
+	 * @param dbPassword
+	 *            the database password
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 * @throws ClassNotFoundException
+	 *             is thrown if the Class was not found or could not be located
+	 */
+	public static void newDatabase(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbUser,
+		final @NonNull String dbPassword) throws SQLException, ClassNotFoundException
+	{
+		PostgreSQLConnectionsExtensions.newDatabase(hostname, POSTGRESQL_PORT, databaseName, dbUser,
+			dbPassword);
+	}
+
+	/**
+	 * Creates the a PostgreSQL database with the given databaseName if it does not exist with the
+	 * default port, user and password
+	 *
+	 * @param hostname
+	 *            the host name
+	 * @param databaseName
+	 *            the database name
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 * @throws ClassNotFoundException
+	 *             is thrown if the Class was not found or could not be located
+	 */
+	public static void newDatabase(final @NonNull String hostname,
+		final @NonNull String databaseName) throws SQLException, ClassNotFoundException
+	{
+		PostgreSQLConnectionsExtensions.newDatabase(hostname, databaseName, POSTGRESQL_DEFAULT_USER,
+			POSTGRESQL_DEFAULT_USER);
 	}
 
 }
