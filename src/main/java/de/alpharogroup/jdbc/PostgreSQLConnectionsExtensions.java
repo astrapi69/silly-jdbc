@@ -389,7 +389,6 @@ public final class PostgreSQLConnectionsExtensions
 	}
 
 
-
 	/**
 	 * Creates a new PostgreSQL database from the given properties
 	 *
@@ -404,15 +403,12 @@ public final class PostgreSQLConnectionsExtensions
 	public static void newDatabase(final @NonNull Properties properties)
 		throws SQLException, ClassNotFoundException
 	{
-			String host = properties.getProperty(APP_DB_HOST);
-			int port = Integer.valueOf(properties.getProperty(APP_DB_PORT));
-			String dbName = properties.getProperty(APP_DB_NAME);
-			String dbUser = properties.getProperty(APP_DB_USERNAME);
-			String dbPw = properties.getProperty(APP_DB_PASSWORD);
-			PostgreSQLConnectionsExtensions.newDatabase(host,
-				port,
-				dbName,
-				dbUser, dbPw);
+		String host = properties.getProperty(APP_DB_HOST);
+		int port = Integer.valueOf(properties.getProperty(APP_DB_PORT));
+		String dbName = properties.getProperty(APP_DB_NAME);
+		String dbUser = properties.getProperty(APP_DB_USERNAME);
+		String dbPw = properties.getProperty(APP_DB_PASSWORD);
+		PostgreSQLConnectionsExtensions.newDatabase(host, port, dbName, dbUser, dbPw);
 	}
 
 }
