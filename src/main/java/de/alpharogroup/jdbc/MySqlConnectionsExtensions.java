@@ -129,17 +129,17 @@ public final class MySqlConnectionsExtensions
 	}
 
 	/**
-	 * Gets the my sql connection.
+	 * Gets the mySql connection
 	 *
 	 * @param hostname
-	 *            the hostname
+	 *            the host name
 	 * @param databaseName
 	 *            the database name
-	 * @param dbuser
-	 *            the dbuser
-	 * @param dbpasswort
-	 *            the dbpasswort
-	 * @return the my sql connection
+	 * @param dbUser
+	 *            the database user
+	 * @param dbPassword
+	 *            the database password
+	 * @return the mySql connection
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 * @throws SQLException
@@ -147,75 +147,90 @@ public final class MySqlConnectionsExtensions
 	 *             connection
 	 */
 	public static Connection getConnection(final @NonNull String hostname,
-		final @NonNull String databaseName, final @NonNull String dbuser,
-		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
+		final @NonNull String databaseName, final @NonNull String dbUser,
+		final @NonNull String dbPassword) throws ClassNotFoundException, SQLException
 	{
-		return getConnection(hostname, MYSQL_PORT, databaseName, dbuser, dbpasswort);
+		return getConnection(hostname, MYSQL_PORT, databaseName, dbUser, dbPassword);
 	}
 
 	/**
-	 * Creates a database with the given databaseName (and sets the characterset to utf8 and the
+	 * Creates a database with the given databaseName (and sets the character set to utf8 and the
 	 * collate to utf8_general_ci) if it does not exist.
 	 *
 	 * @param hostname
-	 *            the hostname
+	 *            the host name
 	 * @param databaseName
 	 *            the database name
-	 * @param dbuser
-	 *            the dbuser
-	 * @param dbpasswort
-	 *            the dbpasswort
+	 * @param dbUser
+	 *            the database user
+	 * @param dbPassword
+	 *            the database password
+	 * @return the {@link CreationState}
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 */
-	public static void newDatabase(final @NonNull String hostname,
-		final @NonNull String databaseName, final @NonNull String dbuser,
-		final @NonNull String dbpasswort) throws SQLException, ClassNotFoundException
+	public static CreationState newDatabase(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbUser,
+		final @NonNull String dbPassword) throws SQLException, ClassNotFoundException
 	{
-		newDatabase(hostname, databaseName, dbuser, dbpasswort, "utf8", "utf8_general_ci");
+		return newDatabase(hostname, databaseName, dbUser, dbPassword, "utf8", "utf8_general_ci");
 	}
 
 	/**
 	 * Creates the a mySql database with the given databaseName if it does not exist.
 	 *
 	 * @param hostname
-	 *            the hostname
+	 *            the host name
 	 * @param databaseName
 	 *            the database name
-	 * @param dbuser
-	 *            the dbuser
-	 * @param dbpasswort
-	 *            the dbpasswort
+	 * @param dbUser
+	 *            the database user
+	 * @param dbPassword
+	 *            the database password
 	 * @param characterSet
 	 *            the character set
 	 * @param collate
 	 *            the collate
+	 * @return the {@link CreationState}
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 */
-	public static void newDatabase(final @NonNull String hostname,
-		final @NonNull String databaseName, final @NonNull String dbuser,
-		final @NonNull String dbpasswort, final @NonNull String characterSet,
+	public static CreationState newDatabase(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbUser,
+		final @NonNull String dbPassword, final @NonNull String characterSet,
 		final @NonNull String collate) throws SQLException, ClassNotFoundException
 	{
-		if (!existsDatabase(hostname, databaseName, dbuser, dbpasswort))
+		if (existsDatabase(hostname, databaseName, dbUser, dbPassword))
 		{
-			try (
-				Connection connection = MySqlConnectionsExtensions.getConnection(hostname, "",
-					dbuser, dbpasswort);
-				Statement stmt = connection.createStatement())
-			{
-				final String sql = "CREATE DATABASE " + databaseName + " DEFAULT CHARACTER SET "
-					+ characterSet + " COLLATE " + collate;
-				stmt.executeUpdate(sql);
-			}
+			return CreationState.ALREADY_EXISTS;
 		}
+		try (
+			Connection connection = MySqlConnectionsExtensions.getConnection(hostname, "", dbUser,
+				dbPassword);
+			Statement stmt = connection.createStatement())
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.append("CREATE DATABASE ");
+			sb.append(databaseName);
+			if (characterSet != null && !characterSet.isEmpty())
+			{
+				sb.append(" DEFAULT CHARACTER SET ");
+				sb.append(characterSet);
+				if (collate != null && !collate.isEmpty())
+				{
+					sb.append(" COLLATE ");
+					sb.append(collate);
+				}
+			}
+			stmt.executeUpdate(sb.toString());
+		}
+		return CreationState.CREATED;
 	}
 
 }

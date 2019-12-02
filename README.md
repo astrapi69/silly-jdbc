@@ -51,7 +51,7 @@ Than you can add the dependency to your dependencies:
 	<properties>
 			...
 		<!-- SILLY-JDBC version -->
-		<silly-jdbc.version>5.6</silly-jdbc.version>
+		<silly-jdbc.version>5.7</silly-jdbc.version>
 			...
 	</properties>
 			...
@@ -74,7 +74,7 @@ Add the following gradle dependency to your project `build.gradle` in the depend
 ```
 ext {
 			...
-    sillyJdbcVersion = '5.6'
+    sillyJdbcVersion = '5.7'
 			...
 }
 dependencies {

@@ -7,11 +7,11 @@
 	<parent>
 		<groupId>de.alpharogroup</groupId>
 		<artifactId>mvn-java-parent</artifactId>
-		<version>5.3</version>
+		<version>5.5</version>
 	</parent>
 
 	<artifactId>silly-jdbc</artifactId>
-	<version>5.6</version>
+	<version>5.7</version>
 
 	<properties>
 		<!-- SPRING versions -->
