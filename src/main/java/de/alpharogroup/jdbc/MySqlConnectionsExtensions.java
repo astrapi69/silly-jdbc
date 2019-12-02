@@ -171,11 +171,11 @@ public final class MySqlConnectionsExtensions
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 */
-	public static void newDatabase(final @NonNull String hostname,
+	public static CreationState newDatabase(final @NonNull String hostname,
 		final @NonNull String databaseName, final @NonNull String dbuser,
 		final @NonNull String dbpasswort) throws SQLException, ClassNotFoundException
 	{
-		newDatabase(hostname, databaseName, dbuser, dbpasswort, "utf8", "utf8_general_ci");
+		return newDatabase(hostname, databaseName, dbuser, dbpasswort, "utf8", "utf8_general_ci");
 	}
 
 	/**
@@ -185,9 +185,9 @@ public final class MySqlConnectionsExtensions
 	 *            the hostname
 	 * @param databaseName
 	 *            the database name
-	 * @param dbuser
+	 * @param dbUser
 	 *            the dbuser
-	 * @param dbpasswort
+	 * @param dbPassword
 	 *            the dbpasswort
 	 * @param characterSet
 	 *            the character set
@@ -199,23 +199,36 @@ public final class MySqlConnectionsExtensions
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 */
-	public static void newDatabase(final @NonNull String hostname,
-		final @NonNull String databaseName, final @NonNull String dbuser,
-		final @NonNull String dbpasswort, final @NonNull String characterSet,
+	public static CreationState newDatabase(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbUser,
+		final @NonNull String dbPassword, final @NonNull String characterSet,
 		final @NonNull String collate) throws SQLException, ClassNotFoundException
 	{
-		if (!existsDatabase(hostname, databaseName, dbuser, dbpasswort))
+		if (existsDatabase(hostname, databaseName, dbUser, dbPassword))
 		{
-			try (
-				Connection connection = MySqlConnectionsExtensions.getConnection(hostname, "",
-					dbuser, dbpasswort);
-				Statement stmt = connection.createStatement())
-			{
-				final String sql = "CREATE DATABASE " + databaseName + " DEFAULT CHARACTER SET "
-					+ characterSet + " COLLATE " + collate;
-				stmt.executeUpdate(sql);
-			}
+			return CreationState.ALREADY_EXISTS;
 		}
+		try (
+			Connection connection = MySqlConnectionsExtensions.getConnection(hostname, "",
+				dbUser, dbPassword);
+			Statement stmt = connection.createStatement())
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.append("CREATE DATABASE ");
+			sb.append(databaseName);
+			if (characterSet != null && !characterSet.isEmpty())
+			{
+				sb.append(" DEFAULT CHARACTER SET ");
+				sb.append(characterSet);
+				if (collate != null && !collate.isEmpty())
+				{
+					sb.append(" COLLATE ");
+					sb.append(collate);
+				}
+			}
+			stmt.executeUpdate(sb.toString());
+		}
+		return CreationState.CREATED;
 	}
 
 }

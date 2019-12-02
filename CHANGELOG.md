@@ -4,6 +4,10 @@
 Version 5.7-SNAPSHOT
 -------------
 
+CHANGED:
+
+- factory methods for create PostgreSQL and mySql database now returns an enum with creation state
+
 Version 5.6
 -------------
 

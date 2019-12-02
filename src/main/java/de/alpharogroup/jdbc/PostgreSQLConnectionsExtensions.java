@@ -212,54 +212,34 @@ public final class PostgreSQLConnectionsExtensions
 	}
 
 	/**
-	 * Creates the a PostgreSQL database with the given databaseName if it does not exist.
+	 * Creates the a PostgreSQL database with the given databaseName if it does not exist
 	 *
 	 * @param hostname
-	 *            the hostname
+	 *            the host name
 	 * @param databaseName
 	 *            the database name
-	 * @param dbuser
-	 *            the dbuser
-	 * @param dbpasswort
-	 *            the dbpasswort
+	 * @param dbUser
+	 *            the database user
+	 * @param dbPassword
+	 *            the database password
 	 * @param characterSet
 	 *            the character set
 	 * @param collate
 	 *            the collate
+	 * @return the {@link CreationState}
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 */
-	public static void newDatabase(final @NonNull String hostname,
-		final @NonNull String databaseName, final @NonNull String dbuser,
-		final @NonNull String dbpasswort, final @NonNull String characterSet,
+	public static CreationState newDatabase(final @NonNull String hostname,
+		final @NonNull String databaseName, final @NonNull String dbUser,
+		final @NonNull String dbPassword, final @NonNull String characterSet,
 		final @NonNull String collate) throws SQLException, ClassNotFoundException
 	{
-		if (!existsDatabase(hostname, databaseName, dbuser, dbpasswort))
-		{
-			try (
-				Connection connection = PostgreSQLConnectionsExtensions.getConnection(hostname, "",
-					dbuser, dbpasswort);
-				Statement stmt = connection.createStatement())
-			{
-				StringBuilder sb = new StringBuilder();
-				sb.append("CREATE DATABASE ");
-				sb.append(databaseName);
-				if (characterSet != null && !characterSet.isEmpty())
-				{
-					sb.append(" DEFAULT CHARACTER SET ");
-					sb.append(characterSet);
-					if (collate != null && !collate.isEmpty())
-					{
-						sb.append(" COLLATE ");
-						sb.append(collate);
-					}
-				}
-				stmt.executeUpdate(sb.toString());
-			}
-		}
+		return newDatabase(hostname, POSTGRESQL_PORT, databaseName, dbUser, dbPassword,
+			characterSet, collate);
 	}
 
 	/**
@@ -279,40 +259,43 @@ public final class PostgreSQLConnectionsExtensions
 	 *            the character set for the new database
 	 * @param collate
 	 *            the collate for the new database
+	 * @return the {@link CreationState}
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located
 	 */
-	public static void newDatabase(final @NonNull String hostname, final int portNumber,
+	public static CreationState newDatabase(final @NonNull String hostname, final int portNumber,
 		final @NonNull String databaseName, final @NonNull String dbUser,
 		final @NonNull String dbPassword, final @NonNull String characterSet,
 		final @NonNull String collate) throws SQLException, ClassNotFoundException
 	{
-		if (!existsDatabase(hostname, portNumber, databaseName, dbUser, dbPassword))
+		if (existsDatabase(hostname, portNumber, databaseName, dbUser, dbPassword))
 		{
-			try (
-				Connection connection = PostgreSQLConnectionsExtensions.getConnection(hostname,
-					portNumber, "", dbUser, dbPassword);
-				Statement stmt = connection.createStatement())
-			{
-				StringBuilder sb = new StringBuilder();
-				sb.append("CREATE DATABASE ");
-				sb.append(databaseName);
-				if (characterSet != null && !characterSet.isEmpty())
-				{
-					sb.append(" DEFAULT CHARACTER SET ");
-					sb.append(characterSet);
-					if (collate != null && !collate.isEmpty())
-					{
-						sb.append(" COLLATE ");
-						sb.append(collate);
-					}
-				}
-				stmt.executeUpdate(sb.toString());
-			}
+			return CreationState.ALREADY_EXISTS;
 		}
+		try (
+			Connection connection = PostgreSQLConnectionsExtensions.getConnection(hostname,
+				portNumber, "", dbUser, dbPassword);
+			Statement stmt = connection.createStatement())
+		{
+			StringBuilder sb = new StringBuilder();
+			sb.append("CREATE DATABASE ");
+			sb.append(databaseName);
+			if (characterSet != null && !characterSet.isEmpty())
+			{
+				sb.append(" DEFAULT CHARACTER SET ");
+				sb.append(characterSet);
+				if (collate != null && !collate.isEmpty())
+				{
+					sb.append(" COLLATE ");
+					sb.append(collate);
+				}
+			}
+			stmt.executeUpdate(sb.toString());
+		}
+		return CreationState.CREATED;
 	}
 
 	/**
@@ -328,18 +311,19 @@ public final class PostgreSQLConnectionsExtensions
 	 *            the database user
 	 * @param dbPassword
 	 *            the database password
+	 * @return the {@link CreationState}
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located
 	 */
-	public static void newDatabase(final @NonNull String hostname, final int portNumber,
+	public static CreationState newDatabase(final @NonNull String hostname, final int portNumber,
 		final @NonNull String databaseName, final @NonNull String dbUser,
 		final @NonNull String dbPassword) throws SQLException, ClassNotFoundException
 	{
-		PostgreSQLConnectionsExtensions.newDatabase(hostname, portNumber, databaseName, dbUser,
-			dbPassword, "", "");
+		return PostgreSQLConnectionsExtensions.newDatabase(hostname, portNumber, databaseName,
+			dbUser, dbPassword, "", "");
 	}
 
 	/**
@@ -353,18 +337,19 @@ public final class PostgreSQLConnectionsExtensions
 	 *            the database user
 	 * @param dbPassword
 	 *            the database password
+	 * @return the {@link CreationState}
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located
 	 */
-	public static void newDatabase(final @NonNull String hostname,
+	public static CreationState newDatabase(final @NonNull String hostname,
 		final @NonNull String databaseName, final @NonNull String dbUser,
 		final @NonNull String dbPassword) throws SQLException, ClassNotFoundException
 	{
-		PostgreSQLConnectionsExtensions.newDatabase(hostname, POSTGRESQL_PORT, databaseName, dbUser,
-			dbPassword);
+		return PostgreSQLConnectionsExtensions.newDatabase(hostname, POSTGRESQL_PORT, databaseName,
+			dbUser, dbPassword);
 	}
 
 	/**
@@ -375,32 +360,34 @@ public final class PostgreSQLConnectionsExtensions
 	 *            the host name
 	 * @param databaseName
 	 *            the database name
+	 * @return the {@link CreationState}
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located
 	 */
-	public static void newDatabase(final @NonNull String hostname,
+	public static CreationState newDatabase(final @NonNull String hostname,
 		final @NonNull String databaseName) throws SQLException, ClassNotFoundException
 	{
-		PostgreSQLConnectionsExtensions.newDatabase(hostname, databaseName, POSTGRESQL_DEFAULT_USER,
-			POSTGRESQL_DEFAULT_USER);
+		return PostgreSQLConnectionsExtensions.newDatabase(hostname, databaseName,
+			POSTGRESQL_DEFAULT_USER, POSTGRESQL_DEFAULT_USER);
 	}
 
 
 	/**
-	 * Creates a new PostgreSQL database from the given properties
+	 * Creates a new PostgreSQL database from the given properties.
 	 *
 	 * @param properties
 	 *            the properties that contains all relevant data
+	 * @return the {@link CreationState}
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located
 	 */
-	public static void newDatabase(final @NonNull Properties properties)
+	public static CreationState newDatabase(final @NonNull Properties properties)
 		throws SQLException, ClassNotFoundException
 	{
 		String host = properties.getProperty(APP_DB_HOST);
@@ -408,7 +395,7 @@ public final class PostgreSQLConnectionsExtensions
 		String dbName = properties.getProperty(APP_DB_NAME);
 		String dbUser = properties.getProperty(APP_DB_USERNAME);
 		String dbPw = properties.getProperty(APP_DB_PASSWORD);
-		PostgreSQLConnectionsExtensions.newDatabase(host, port, dbName, dbUser, dbPw);
+		return PostgreSQLConnectionsExtensions.newDatabase(host, port, dbName, dbUser, dbPw);
 	}
 
 }
