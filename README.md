@@ -51,7 +51,7 @@ Than you can add the dependency to your dependencies:
 	<properties>
 			...
 		<!-- SILLY-JDBC version -->
-		<silly-jdbc.version>5.7</silly-jdbc.version>
+		<silly-jdbc.version>5.8</silly-jdbc.version>
 			...
 	</properties>
 			...
@@ -69,17 +69,31 @@ Than you can add the dependency to your dependencies:
 	
 ## gradle dependency
 
-Add the following gradle dependency to your project `build.gradle` in the dependencies section if you want to import the core functionality of silly-jdbc:
+Add the following gradle dependency to your project `build.gradle` in the dependencies section if 
+you want to import the core functionality of silly-jdbc:
+
+
+define version in file gradle.properties
+```
+sillyJdbcVersion=5.8
+```
+
+or in build.gradle ext area
 
 ```
 ext {
 			...
-    sillyJdbcVersion = '5.7'
+    sillyJdbcVersion = '5.8'
 			...
 }
+```
+
+and than add the dependency to the dependencies area
+ 
+```
 dependencies {
 			...
-	compile 'de.alpharogroup:silly-jdbc:${sillyJdbcVersion}'
+	implementation("de.alpharogroup:silly-jdbc:$sillyJdbcVersion")
 			...
 }
 ```
