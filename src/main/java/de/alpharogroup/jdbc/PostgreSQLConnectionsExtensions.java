@@ -208,7 +208,63 @@ public final class PostgreSQLConnectionsExtensions
 		sb.append("/");
 		sb.append(databaseName);
 		Class.forName(DRIVERNAME);
-		return DriverManager.getConnection(sb.toString().trim(), dbuser, dbpasswort);
+		return getConnection(sb.toString().trim(), dbuser, dbpasswort);
+	}
+
+	/**
+	 * Gets the postgres sql connection from the given parameters.
+	 *
+	 * @param url
+	 *            the database url
+	 * @param dbuser
+	 *            the dbuser
+	 * @param dbpasswort
+	 *            the dbpasswort
+	 * @return the postgres sql connection
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 */
+	public static Connection getConnection(final @NonNull String url, final @NonNull String dbuser,
+		final @NonNull String dbpasswort) throws SQLException
+	{
+		return DriverManager.getConnection(url, dbuser, dbpasswort);
+	}
+
+	/**
+	 * Gets the postgres sql connection from the given parameters.
+	 *
+	 * @param jdbcUrlBean
+	 *            the bean that encapsulates the database url
+	 * @param dbuser
+	 *            the dbuser
+	 * @param dbpasswort
+	 *            the dbpasswort
+	 * @return the postgres sql connection
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 */
+	public static Connection getConnection(final @NonNull JdbcUrlBean jdbcUrlBean,
+		final @NonNull String dbuser,
+		final @NonNull String dbpasswort) throws SQLException
+	{
+		return DriverManager.getConnection(jdbcUrlBean.buildUrlString(jdbcUrlBean), dbuser, dbpasswort);
+	}
+
+	/**
+	 * Gets the postgres sql connection from the given parameters.
+	 *
+	 * @param jdbcConnectionInfo
+	 *            the bean that encapsulates the database url, the db user and password
+	 * @return the postgres sql connection
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 */
+	public static Connection getConnection(final @NonNull JdbcConnectionInfo jdbcConnectionInfo) throws SQLException
+	{
+		return getConnection(jdbcConnectionInfo.getJdbcUrlBean(), jdbcConnectionInfo.getUser(), jdbcConnectionInfo.getPasswort());
 	}
 
 	/**

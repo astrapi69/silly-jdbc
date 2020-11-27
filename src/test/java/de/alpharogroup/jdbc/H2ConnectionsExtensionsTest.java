@@ -37,11 +37,11 @@ import org.testng.annotations.Test;
 /**
  * The unit test class for the class {@link ConnectionsExtensions}.
  */
-public class ConnectionsExtensionsTest
+public class H2ConnectionsExtensionsTest
 {
 
 	/**
-	 * Test method for {@link ConnectionsExtensions#getH2Connection(String, String, String, String)}
+	 * Test method for {@link H2ConnectionsExtensions#getConnection(String, String, String, String)}
 	 *
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.

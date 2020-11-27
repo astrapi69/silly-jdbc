@@ -110,10 +110,7 @@ public class JdbcUrlBean
 	 */
 	public static String newMysqlJdbcUrl(final JdbcUrlBean bean)
 	{
-		final StringBuilder sb = new StringBuilder();
-		sb.append(bean.getProtocol()).append(bean.getHost()).append(":").append(bean.getPort())
-			.append("/").append(bean.getDatabase());
-		return sb.toString();
+		return buildUrlString(bean);
 	}
 
 	/**
@@ -124,6 +121,11 @@ public class JdbcUrlBean
 	 * @return the string
 	 */
 	public static String newPostgresJdbcUrl(final JdbcUrlBean bean)
+	{
+		return buildUrlString(bean);
+	}
+
+	public static String buildUrlString(JdbcUrlBean bean)
 	{
 		final StringBuilder sb = new StringBuilder();
 		sb.append(bean.getProtocol()).append(bean.getHost()).append(":").append(bean.getPort())
