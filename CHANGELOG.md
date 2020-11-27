@@ -6,9 +6,16 @@ Version 5.8-SNAPSHOT
 
 ADDED:
 
+- new build system gradle
 - created new factory method for create PostgreSQL database connection with JdbcUrlBean and credentials
 - created new class JdbcConnectionInfo that holds all information for connect to a PostgreSQL database
 - created new factory method for create PostgreSQL database connection with a single argument of JdbcConnectionInfo
+
+CHANGED:
+
+- changed project nature from maven to gradle nature
+- extracted project properties to gradle.properties
+- extracted project gradle plugin versions to buildscript.ext area in gradle.properties
 
 Version 5.7
 -------------
