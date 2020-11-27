@@ -246,10 +246,10 @@ public final class PostgreSQLConnectionsExtensions
 	 *             connection
 	 */
 	public static Connection getConnection(final @NonNull JdbcUrlBean jdbcUrlBean,
-		final @NonNull String dbuser,
-		final @NonNull String dbpasswort) throws SQLException
+		final @NonNull String dbuser, final @NonNull String dbpasswort) throws SQLException
 	{
-		return DriverManager.getConnection(jdbcUrlBean.buildUrlString(jdbcUrlBean), dbuser, dbpasswort);
+		return DriverManager.getConnection(jdbcUrlBean.buildUrlString(jdbcUrlBean), dbuser,
+			dbpasswort);
 	}
 
 	/**
@@ -262,9 +262,11 @@ public final class PostgreSQLConnectionsExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static Connection getConnection(final @NonNull JdbcConnectionInfo jdbcConnectionInfo) throws SQLException
+	public static Connection getConnection(final @NonNull JdbcConnectionInfo jdbcConnectionInfo)
+		throws SQLException
 	{
-		return getConnection(jdbcConnectionInfo.getJdbcUrlBean(), jdbcConnectionInfo.getUser(), jdbcConnectionInfo.getPasswort());
+		return getConnection(jdbcConnectionInfo.getJdbcUrlBean(), jdbcConnectionInfo.getUser(),
+			jdbcConnectionInfo.getPasswort());
 	}
 
 	/**

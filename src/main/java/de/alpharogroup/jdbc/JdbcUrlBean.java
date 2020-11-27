@@ -53,6 +53,17 @@ public class JdbcUrlBean
 	/** The default builder for the postgresql jdbc url. */
 	public static final JdbcUrlBean DEFAULT_POSTGRESQL_URL = JdbcUrlBean.builder()
 		.protocol("jdbc:postgresql://").host("localhost").port(5432).build();
+	/** The database. */
+	String database;
+	/** The host. */
+	String host;
+	/** The parameters. */
+	@Singular
+	List<String> parameters;
+	/** The port. */
+	int port;
+	/** The protocol. */
+	String protocol;
 
 	/**
 	 * Builds a default mysql jdbc url with the given database.
@@ -132,21 +143,5 @@ public class JdbcUrlBean
 			.append("/").append(bean.getDatabase());
 		return sb.toString();
 	}
-
-	/** The database. */
-	String database;
-
-	/** The host. */
-	String host;
-
-	/** The parameters. */
-	@Singular
-	List<String> parameters;
-
-	/** The port. */
-	int port;
-
-	/** The protocol. */
-	String protocol;
 
 }
