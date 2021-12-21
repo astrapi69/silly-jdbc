@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.jdbc;
+package io.github.astrapi69.jdbc;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -30,11 +30,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import lombok.experimental.UtilityClass;
+
 import org.springframework.jdbc.support.DatabaseMetaDataCallback;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.jdbc.support.MetaDataAccessException;
-
-import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link DatabaseMetadataExtensions} holds algorithms for provide data from the

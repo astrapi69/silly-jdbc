@@ -22,14 +22,14 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.springconfig;
+package io.github.astrapi69.springconfig;
 
 import javax.sql.DataSource;
 
+import lombok.experimental.UtilityClass;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-import lombok.experimental.UtilityClass;
 
 /**
  * A factory class for creating {@link DataSource} object and {@link JdbcTemplate} object

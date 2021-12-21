@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.jdbc;
+package io.github.astrapi69.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -248,7 +248,7 @@ public final class PostgreSQLConnectionsExtensions
 	public static Connection getConnection(final @NonNull JdbcUrlBean jdbcUrlBean,
 		final @NonNull String dbuser, final @NonNull String dbpasswort) throws SQLException
 	{
-		return DriverManager.getConnection(jdbcUrlBean.buildUrlString(jdbcUrlBean), dbuser,
+		return DriverManager.getConnection(JdbcUrlBean.buildUrlString(jdbcUrlBean), dbuser,
 			dbpasswort);
 	}
 
