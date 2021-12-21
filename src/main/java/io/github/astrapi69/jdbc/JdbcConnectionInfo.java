@@ -22,39 +22,27 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package de.alpharogroup.springconfig;
+package io.github.astrapi69.jdbc;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
-/**
- * The class {@link DataSourceBean} encapsulates the data for a <code>DataSource</code> object
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DataSourceBean
+public class JdbcConnectionInfo
 {
-
-	/** The default h2 builder as start point to build a new DataSourceBean. */
-	public static final DataSourceBean DEFAULT_H2_BUILDER = DataSourceBean.builder()
-		.driverClassName("org.h2.Driver").username("sa").password("").build();
-
-	/** The driver class name. */
-	String driverClassName;
-
-	/** The password. */
-	String password;
-
-	/** The url. */
-	String url;
-
-	/** The username. */
-	String username;
+	@NonNull
+	JdbcUrlBean jdbcUrlBean;
+	@NonNull
+	String user;
+	@NonNull
+	String passwort;
 }

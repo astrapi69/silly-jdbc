@@ -1,6 +1,17 @@
 ## Change log
 ----------------------
 
+Version 5.9
+-------------
+
+CHANGED:
+
+- changed to new package io.github.astrapi69
+- update gradle to new version 7.3.2
+- update of dependency lombok version to 1.18.22
+- update of dependency spring version to 5.3.14
+- update of testng test dependency version to 7.4.0
+
 Version 5.8
 -------------
 
