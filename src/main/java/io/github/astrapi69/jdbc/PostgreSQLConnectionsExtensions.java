@@ -45,7 +45,7 @@ public final class PostgreSQLConnectionsExtensions
 
 	/** PostgreSQL-database constants. */
 	/** Constant for the drivername from PostgreSQL-database. */
-	public static final String DRIVERNAME = "org.postgresql.Driver";
+	public static final String DRIVER_NAME = "org.postgresql.Driver";
 
 	/** Constant for the urlprefix from PostgreSQL-database. */
 	public static final String URL_PREFIX = "jdbc:postgresql://";
@@ -207,7 +207,7 @@ public final class PostgreSQLConnectionsExtensions
 		sb.append(portNumber);
 		sb.append("/");
 		sb.append(databaseName);
-		Class.forName(DRIVERNAME);
+		Class.forName(DRIVER_NAME);
 		return getConnection(sb.toString().trim(), dbuser, dbpasswort);
 	}
 

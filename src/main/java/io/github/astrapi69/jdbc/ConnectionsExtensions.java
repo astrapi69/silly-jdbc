@@ -124,26 +124,26 @@ public final class ConnectionsExtensions
 	public static void executeSqlScript(final @NonNull Connection connection,
 		final @NonNull String sqlScript, final boolean log) throws SQLException
 	{
-		final String[] inst = sqlScript.split(";");
+		final String[] sqlStatements = sqlScript.split(";");
 		try (Statement st = connection.createStatement())
 		{
 			if (log)
 			{
-				for (final String inst1 : inst)
+				for (final String sqlStatement : sqlStatements)
 				{
-					if (!inst1.trim().equals(""))
+					if (!sqlStatement.trim().equals(""))
 					{
-						st.executeUpdate(inst1);
+						st.executeUpdate(sqlStatement);
 					}
 				}
 			}
 			else
 			{
-				for (final String inst1 : inst)
+				for (final String sqlStatement : sqlStatements)
 				{
-					if (!inst1.trim().equals(""))
+					if (!sqlStatement.trim().equals(""))
 					{
-						st.executeUpdate(inst1);
+						st.executeUpdate(sqlStatement);
 					}
 				}
 			}

@@ -48,7 +48,7 @@ public final class MySqlConnectionsExtensions
 
 	/** MySQL-database constants. */
 	/** Constant for the drivername from MySQL-database. */
-	public static final String DRIVERNAME = "com.mysql.jdbc.Driver";
+	public static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
 
 	/** Constant for the urlprefix from MySQL-database. */
 	public static final String URL_PREFIX = "jdbc:mysql://";
@@ -124,7 +124,7 @@ public final class MySqlConnectionsExtensions
 		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
 	{
 		final String url = URL_PREFIX + hostname + ":" + portNumber + "/" + databaseName;
-		Class.forName(DRIVERNAME);
+		Class.forName(DRIVER_NAME);
 		return DriverManager.getConnection(url, dbuser, dbpasswort);
 	}
 

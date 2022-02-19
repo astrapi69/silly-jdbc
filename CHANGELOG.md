@@ -4,6 +4,20 @@
 Version 5.10-SNAPSHOT
 -------------
 
+ADDED:
+
+- created new connection classes for sqllite and HyperSQL
+- new gradle plugin spotless in version 6.3.0
+
+CHANGED:
+
+- update gradle to new version 7.4
+- update of io.freefair.gradle:lombok-plugin to new version 6.4.1
+- update of com.github.ben-manes.versions.gradle.plugin to new version 0.42.0
+- update of dependency spring version to 5.3.16
+- update of testng test dependency version to 7.5
+
+
 Version 5.9
 -------------
 
@@ -76,12 +90,10 @@ Version 5.2
 -------------
 
 ADDED:
- 
+
 - this changelog file
 - created PULL_REQUEST_TEMPLATE.md file
 - created CODE_OF_CONDUCT.md file
 - created CONTRIBUTING.md file
 - provide package.html for the javadoc of packages
 - moved classes from obsolet jcommons-lang project
-
-

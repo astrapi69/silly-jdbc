@@ -29,50 +29,51 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link H2ConnectionsExtensions} have convenience methods to create and connect to H2
- * databases
+ * The class {@link HyperSQLExtensions} have convenience methods to connect to HyperSQL databases
  *
  * @author Asterios Raptis
  */
-@UtilityClass
-public final class H2ConnectionsExtensions
+public class HyperSQLExtensions
 {
 
-	/** H2-database constants. */
-	/** Constant for the drivername from H2-database. */
-	public static final String DRIVER_NAME = "org.h2.Driver";
-
-	/** Constant for the urlprefix from H2-database. */
-	public static final String URL_PREFIX = "jdbc:h2";
+	/** HyperSQL-database constants. */
+	/** Constant for the drivername from HyperSQL-database. */
+	public static final String DRIVER_NAME = "org.hsqldb.jdbc.JDBCDriver";
+	/** Constant for the urlprefix from HyperSQL-database. */
+	public static final String URL_PREFIX = "jdbc:hsqldb";
+	/** Constant for the default user from HyperSQL-database. */
+	public static final String DEFAULT_USER = "SA";
+	/** Constant for the default password from HyperSQL-database. */
+	public static final String DEFAULT_PASSWORD = "";
+	/** Constant for the default password from HyperSQL-database. */
+	public static final String CATALOG_TYPE_FILE = "file";
 
 	/**
-	 * Gets the H2 connection.
+	 * Gets the HyperSQL connection to a file catalog
 	 *
-	 * @param path
-	 *            the path
-	 * @param databaseName
-	 *            the database name
-	 * @param dbuser
-	 *            the dbuser
-	 * @param dbpasswort
-	 *            the dbpasswort
-	 * @return the H2 connection
+	 * @param directoryPath
+	 *            the absolute path to the database directory
+	 * @param dbFileName
+	 *            the database file name
+	 * @param dbUser
+	 *            the database user
+	 * @param dbPassword
+	 *            the database password
+	 * @return the HyperSQL connection
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static Connection getConnection(final @NonNull String path,
-		final @NonNull String databaseName, final @NonNull String dbuser,
-		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
+	public static Connection getConnection(final @NonNull String directoryPath,
+		final @NonNull String dbFileName, final @NonNull String dbUser,
+		final @NonNull String dbPassword) throws ClassNotFoundException, SQLException
 	{
-		final String url = URL_PREFIX + ":" + path + databaseName;
+		final String url = URL_PREFIX + ":" + CATALOG_TYPE_FILE + ":" + directoryPath + dbFileName;
 		Class.forName(DRIVER_NAME);
-		return DriverManager.getConnection(url, dbuser, dbpasswort);
+		return DriverManager.getConnection(url, dbUser, dbPassword);
 	}
-
 }

@@ -2,9 +2,9 @@
 
 <div style="text-align: center">
 
-[![Build Status](https://api.travis-ci.com/astrapi69/silly-jdbc.svg?branch=develop)](https://api.travis-ci.com/github/astrapi69/silly-jdbc) 
-[![Coverage Status](https://coveralls.io/repos/github/astrapi69/silly-jdbc/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/silly-jdbc?branch=develop) 
-[![Open Issues](https://img.shields.io/github/issues/astrapi69/silly-jdbc.svg?style=flat)](https://github.com/astrapi69/silly-jdbc/issues) 
+[![Build Status](https://api.travis-ci.com/astrapi69/silly-jdbc.svg?branch=develop)](https://api.travis-ci.com/github/astrapi69/silly-jdbc)
+[![Coverage Status](https://coveralls.io/repos/github/astrapi69/silly-jdbc/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/silly-jdbc?branch=develop)
+[![Open Issues](https://img.shields.io/github/issues/astrapi69/silly-jdbc.svg?style=flat)](https://github.com/astrapi69/silly-jdbc/issues)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/silly-jdbc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/silly-jdbc)
 [![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/silly-jdbc.svg)](http://www.javadoc.io/doc/io.github.astrapi69/silly-jdbc)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
@@ -35,9 +35,9 @@ or in build.gradle ext area
 
 ```
 ext {
-			...
+            ...
     sillyJdbcVersion = '5.9'
-			...
+            ...
 }
 ```
 
@@ -45,9 +45,9 @@ and than add the dependency to the dependencies area
 
 ```
 dependencies {
-			...
-	implementation("io.github.astrapi69:silly-jdbc:$sillyJdbcVersion")
-			...
+            ...
+    implementation("io.github.astrapi69:silly-jdbc:$sillyJdbcVersion")
+            ...
 }
 ```
 
@@ -60,23 +60,23 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 
 Than you can add the dependency to your dependencies:
 
-	<properties>
-			...
-		<!-- SILLY-JDBC version -->
-		<silly-jdbc.version>5.9</silly-jdbc.version>
-			...
-	</properties>
-			...
-		<dependencies>
-			...
-			<!-- SILLY-JDBC DEPENDENCY -->
-			<dependency>
-				<groupId>io.github.astrapi69</groupId>
-				<artifactId>silly-jdbc</artifactId>
-				<version>${silly-jdbc.version}</version>
-			</dependency>
-			...
-		</dependencies>
+    <properties>
+            ...
+        <!-- SILLY-JDBC version -->
+        <silly-jdbc.version>5.9</silly-jdbc.version>
+            ...
+    </properties>
+            ...
+        <dependencies>
+            ...
+            <!-- SILLY-JDBC DEPENDENCY -->
+            <dependency>
+                <groupId>io.github.astrapi69</groupId>
+                <artifactId>silly-jdbc</artifactId>
+                <version>${silly-jdbc.version}</version>
+            </dependency>
+            ...
+        </dependencies>
 
 # Donations
 
@@ -200,4 +200,3 @@ Do not hesitate to contact the silly-jdbc developers with your questions, concer
 |[![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/silly-jdbc.svg)](http://www.javadoc.io/doc/io.github.astrapi69/silly-jdbc)|
 |Special thanks to [javadoc.io](http://www.javadoc.io) for providing a free javadoc documentation for open source projects|
 |     <img width=1000/>     |
-
