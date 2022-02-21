@@ -82,9 +82,9 @@ public class HyperSQLExtensions
 
 	/**
 	 * Gets the HyperSQL connection to a memory catalog
-	 * 
-	 * @param dbFileName
-	 *            the database file name
+	 *
+	 * @param databaseName
+	 *            the database name
 	 * @param dbUser
 	 *            the database user
 	 * @param dbPassword
@@ -96,11 +96,11 @@ public class HyperSQLExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static Connection getMemoryConnection(final @NonNull String dbFileName,
+	public static Connection getMemoryConnection(final @NonNull String databaseName,
 		final @NonNull String dbUser, final @NonNull String dbPassword)
 		throws ClassNotFoundException, SQLException
 	{
-		final String url = URL_PREFIX + CATALOG_TYPE_MEMORY + ":" + dbFileName;
+		final String url = URL_PREFIX + CATALOG_TYPE_MEMORY + ":" + databaseName;
 		Class.forName(DRIVER_NAME);
 		return DriverManager.getConnection(url, dbUser, dbPassword);
 	}

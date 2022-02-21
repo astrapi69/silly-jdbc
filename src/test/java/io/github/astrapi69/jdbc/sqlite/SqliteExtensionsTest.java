@@ -52,31 +52,53 @@ public class SqliteExtensionsTest
 	String tableName = "accounts";
 
 	@Test
-	void getConnection() throws SQLException, ClassNotFoundException, IOException
+	void getMemoryConnection() throws SQLException, ClassNotFoundException, IOException
+	{
+		String databaseName = tableName + ".sqlite";
+		Connection connection = SqliteExtensions.getMemoryConnection(databaseName);
+
+		// SQL statement for creating a new table
+		String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (\n"
+			+ "	id integer PRIMARY KEY,\n" + "	name text NOT NULL,\n" + "	balance real\n" + ");";
+		ConnectionsExtensions.executeSqlScript(connection, sql, true);
+		SqliteExtensions.deleteAllRows(SqliteExtensions.getMemoryConnection(databaseName),
+			"accounts");
+		insert(SqliteExtensions.getMemoryConnection(databaseName), "Superman", 3000);
+		insert(SqliteExtensions.getMemoryConnection(databaseName), "Spiderman", 4000);
+		insert(SqliteExtensions.getMemoryConnection(databaseName), "Batman", 5000);
+		selectAll(SqliteExtensions.getMemoryConnection(databaseName));
+		findBalanceGreaterThan(SqliteExtensions.getMemoryConnection(databaseName), 3900);
+		update(SqliteExtensions.getMemoryConnection(databaseName), 3, "Batman", 5500);
+		selectAll(SqliteExtensions.getMemoryConnection(databaseName));
+		delete(SqliteExtensions.getMemoryConnection(databaseName), 3);
+	}
+
+	@Test
+	void getFileConnection() throws SQLException, ClassNotFoundException, IOException
 	{
 		// create temporary directory for database file ...
 		File sqliteDir = FileFactory.newDirectory(PathFinder.getSrcTestResourcesDir(), "sqlite");
 		String path = sqliteDir.getAbsolutePath();
 		String databaseName = tableName + ".sqlite";
-		Connection connection = SqliteExtensions.getConnection(path, databaseName);
+		Connection connection = SqliteExtensions.getFileConnection(path, databaseName);
 
-		CreationState creationState = SqliteExtensions.newDatabase(path, databaseName);
+		CreationState creationState = SqliteExtensions.newFileDatabase(path, databaseName);
 		assertEquals(creationState, CreationState.ALREADY_EXISTS);
 
 		// SQL statement for creating a new table
 		String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (\n"
 			+ "	id integer PRIMARY KEY,\n" + "	name text NOT NULL,\n" + "	balance real\n" + ");";
 		ConnectionsExtensions.executeSqlScript(connection, sql, true);
-		SqliteExtensions.deleteAllRows(SqliteExtensions.getConnection(path, databaseName),
+		SqliteExtensions.deleteAllRows(SqliteExtensions.getFileConnection(path, databaseName),
 			"accounts");
-		insert(SqliteExtensions.getConnection(path, databaseName), "Superman", 3000);
-		insert(SqliteExtensions.getConnection(path, databaseName), "Spiderman", 4000);
-		insert(SqliteExtensions.getConnection(path, databaseName), "Batman", 5000);
-		selectAll(SqliteExtensions.getConnection(path, databaseName));
-		findBalanceGreaterThan(SqliteExtensions.getConnection(path, databaseName), 3900);
-		update(SqliteExtensions.getConnection(path, databaseName), 3, "Batman", 5500);
-		selectAll(SqliteExtensions.getConnection(path, databaseName));
-		delete(SqliteExtensions.getConnection(path, databaseName), 3);
+		insert(SqliteExtensions.getFileConnection(path, databaseName), "Superman", 3000);
+		insert(SqliteExtensions.getFileConnection(path, databaseName), "Spiderman", 4000);
+		insert(SqliteExtensions.getFileConnection(path, databaseName), "Batman", 5000);
+		selectAll(SqliteExtensions.getFileConnection(path, databaseName));
+		findBalanceGreaterThan(SqliteExtensions.getFileConnection(path, databaseName), 3900);
+		update(SqliteExtensions.getFileConnection(path, databaseName), 3, "Batman", 5500);
+		selectAll(SqliteExtensions.getFileConnection(path, databaseName));
+		delete(SqliteExtensions.getFileConnection(path, databaseName), 3);
 		// clean up
 		DeleteFileExtensions.delete(sqliteDir);
 	}

@@ -74,7 +74,7 @@ public class SqliteExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static CreationState newDatabase(String directoryPath, String dbFileName)
+	public static CreationState newFileDatabase(String directoryPath, String dbFileName)
 		throws SQLException, ClassNotFoundException
 	{
 		File file = new File(directoryPath, dbFileName);
@@ -82,7 +82,7 @@ public class SqliteExtensions
 		{
 			return CreationState.ALREADY_EXISTS;
 		}
-		getConnection(directoryPath, dbFileName);
+		getFileConnection(directoryPath, dbFileName);
 		return CreationState.CREATED;
 	}
 
@@ -100,12 +100,32 @@ public class SqliteExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static Connection getConnection(final @NonNull String directoryPath,
+	public static Connection getFileConnection(final @NonNull String directoryPath,
 		final @NonNull String dbFileName) throws ClassNotFoundException, SQLException
 	{
 		String slashIfMissing = !directoryPath.endsWith("/") ? "/" : "";
 		String path = directoryPath + slashIfMissing;
 		final String url = URL_PREFIX + path + dbFileName;
+		Class.forName(DRIVER_NAME);
+		return DriverManager.getConnection(url);
+	}
+
+	/**
+	 * Gets the sqllite connection
+	 *
+	 * @param databaseName
+	 *            the database name
+	 * @return the sqllite connection
+	 * @throws ClassNotFoundException
+	 *             is thrown if the Class was not found or could not be located.
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 */
+	public static Connection getMemoryConnection(final @NonNull String databaseName)
+		throws ClassNotFoundException, SQLException
+	{
+		String url = URL_PREFIX + ":" + "memory" + ":" + databaseName;
 		Class.forName(DRIVER_NAME);
 		return DriverManager.getConnection(url);
 	}
