@@ -38,7 +38,6 @@ import lombok.NonNull;
 public class HyperSQLExtensions
 {
 
-	/** HyperSQL-database constants. */
 	/** Constant for the drivername from HyperSQL-database. */
 	public static final String DRIVER_NAME = "org.hsqldb.jdbc.JDBCDriver";
 	/** Constant for the urlprefix from HyperSQL-database. */
@@ -49,6 +48,8 @@ public class HyperSQLExtensions
 	public static final String DEFAULT_PASSWORD = "sa";
 	/** Constant for the default password from HyperSQL-database. */
 	public static final String CATALOG_TYPE_FILE = "file";
+	/** Constant for the default password from HyperSQL-database. */
+	public static final String CATALOG_TYPE_MEMORY = "mem";
 
 	/**
 	 * Gets the HyperSQL connection to a file catalog
@@ -68,11 +69,36 @@ public class HyperSQLExtensions
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
 	 */
-	public static Connection getConnection(final @NonNull String directoryPath,
+	public static Connection getFileConnection(final @NonNull String directoryPath,
 		final @NonNull String dbFileName, final @NonNull String dbUser,
 		final @NonNull String dbPassword) throws ClassNotFoundException, SQLException
 	{
 		final String url = URL_PREFIX + CATALOG_TYPE_FILE + ":" + directoryPath + dbFileName;
+		Class.forName(DRIVER_NAME);
+		return DriverManager.getConnection(url, dbUser, dbPassword);
+	}
+
+	/**
+	 * Gets the HyperSQL connection to a memory catalog
+	 * 
+	 * @param dbFileName
+	 *            the database file name
+	 * @param dbUser
+	 *            the database user
+	 * @param dbPassword
+	 *            the database password
+	 * @return the HyperSQL connection
+	 * @throws ClassNotFoundException
+	 *             is thrown if the Class was not found or could not be located.
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 */
+	public static Connection getMemoryConnection(final @NonNull String dbFileName,
+		final @NonNull String dbUser, final @NonNull String dbPassword)
+		throws ClassNotFoundException, SQLException
+	{
+		final String url = URL_PREFIX + CATALOG_TYPE_MEMORY + ":" + dbFileName;
 		Class.forName(DRIVER_NAME);
 		return DriverManager.getConnection(url, dbUser, dbPassword);
 	}
