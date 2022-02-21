@@ -54,7 +54,12 @@ public class SqliteExtensionsTest
 	@Test
 	void getMemoryConnection() throws SQLException, ClassNotFoundException, IOException
 	{
+		// create temporary directory for database file ...
+
+		File projectDirectory = PathFinder.getProjectDirectory();
+		String path = projectDirectory.getAbsolutePath();
 		String databaseName = tableName + ".sqlite";
+		File memoryFile = FileFactory.newFile(projectDirectory, ":memory:" + databaseName);
 		Connection connection = SqliteExtensions.getMemoryConnection(databaseName);
 
 		// SQL statement for creating a new table
@@ -71,6 +76,8 @@ public class SqliteExtensionsTest
 		update(SqliteExtensions.getMemoryConnection(databaseName), 3, "Batman", 5500);
 		selectAll(SqliteExtensions.getMemoryConnection(databaseName));
 		delete(SqliteExtensions.getMemoryConnection(databaseName), 3);
+		// clean up
+		DeleteFileExtensions.delete(memoryFile);
 	}
 
 	@Test
