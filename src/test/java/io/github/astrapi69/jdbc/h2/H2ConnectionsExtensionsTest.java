@@ -64,10 +64,12 @@ public class H2ConnectionsExtensionsTest
 		String dbuser;
 		String dbpasswort;
 		Connection connection;
-		// create temporary directory for database file ...
-		File h2Dir = FileFactory.newDirectory(PathFinder.getSrcTestResourcesDir(), "h2");
-		path = h2Dir.getAbsolutePath();
+		File databaseFile;
+		File srcTestResourcesDir = PathFinder.getSrcTestResourcesDir();
+		path = srcTestResourcesDir.getAbsolutePath();
 		databaseName = "resourcebundles";
+		// create temporary directory for database file ...
+		databaseFile = FileFactory.newFile(srcTestResourcesDir, databaseName + ".mv.db");
 		dbuser = "sa";
 		dbpasswort = "";
 		Server server = H2Launcher.newServer();
@@ -76,7 +78,7 @@ public class H2ConnectionsExtensionsTest
 		assertNotNull(connection);
 		H2Launcher.stop(server);
 		// clean up
-		DeleteFileExtensions.delete(h2Dir);
+		DeleteFileExtensions.delete(databaseFile);
 	}
 
 }
