@@ -159,15 +159,6 @@ public class JdbcUrlBean implements Cloneable
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected Object clone() throws CloneNotSupportedException
-	{
-		return this.toBuilder().build();
-	}
-
-	/**
 	 * Builds a mysql jdbc url with the given {@link JdbcUrlBean} object.
 	 *
 	 * @param bean
@@ -197,6 +188,15 @@ public class JdbcUrlBean implements Cloneable
 		stringBuilder.append(bean.getProtocol()).append(bean.getHost()).append(":")
 			.append(bean.getPort()).append("/").append(bean.getDatabase());
 		return stringBuilder.toString();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Object clone() throws CloneNotSupportedException
+	{
+		return this.toBuilder().build();
 	}
 
 }
