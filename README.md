@@ -2,12 +2,14 @@
 
 <div style="text-align: center">
 
-[![Build Status](https://api.travis-ci.com/astrapi69/silly-jdbc.svg?branch=develop)](https://api.travis-ci.com/github/astrapi69/silly-jdbc)
-[![Coverage Status](https://coveralls.io/repos/github/astrapi69/silly-jdbc/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/silly-jdbc?branch=develop)
+[![Java CI with Gradle](https://github.com/astrapi69/silly-jdbc/actions/workflows/gradle.yml/badge.svg)](https://github.com/astrapi69/silly-jdbc/actions/workflows/gradle.yml)
+[![Coverage Status](https://codecov.io/gh/astrapi69/silly-jdbc/branch/develop/graph/badge.svg)](https://codecov.io/gh/astrapi69/silly-jdbc)
 [![Open Issues](https://img.shields.io/github/issues/astrapi69/silly-jdbc.svg?style=flat)](https://github.com/astrapi69/silly-jdbc/issues)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/silly-jdbc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/silly-jdbc)
 [![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/silly-jdbc.svg)](http://www.javadoc.io/doc/io.github.astrapi69/silly-jdbc)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
+[![Donate](https://img.shields.io/badge/donate-❤-ff2244.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8)
+[![Hits Of Code](https://hitsofcode.com/github/astrapi69/silly-jdbc?branch=develop)](https://hitsofcode.com/github/astrapi69/silly-jdbc/view?branch=develop)
 
 </div>
 
