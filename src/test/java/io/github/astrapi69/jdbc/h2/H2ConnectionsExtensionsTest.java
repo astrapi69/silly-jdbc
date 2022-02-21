@@ -77,8 +77,8 @@ public class H2ConnectionsExtensionsTest
 		H2Launcher.stop(server);
 		// clean up
 		// create temporary directory for database file ...
-		// databaseFile = FileFactory.newFile(srcTestResourcesDir, databaseName + ".mv.db");
-		// DeleteFileExtensions.delete(databaseFile);
+		databaseFile = FileFactory.newFile(srcTestResourcesDir, databaseName + ".mv.db");
+		DeleteFileExtensions.delete(databaseFile);
 	}
 
 }
