@@ -33,6 +33,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Singular;
 import lombok.experimental.FieldDefaults;
+import io.github.astrapi69.jdbc.h2.H2ConnectionsExtensions;
+import io.github.astrapi69.jdbc.hsqldb.HyperSQLExtensions;
+import io.github.astrapi69.jdbc.mysql.MySqlConnectionsExtensions;
+import io.github.astrapi69.jdbc.postgresql.PostgreSQLConnectionsExtensions;
+import io.github.astrapi69.jdbc.sqlite.SqliteExtensions;
 
 /**
  * The class {@link JdbcUrlBean} hold data to build a jdbc url and factory methods for create a jdbc
@@ -46,13 +51,30 @@ import lombok.experimental.FieldDefaults;
 public class JdbcUrlBean
 {
 
+	/** The default builder for the H2 jdbc url. */
+	public static final JdbcUrlBean DEFAULT_H2_URL = JdbcUrlBean.builder()
+		.protocol(H2ConnectionsExtensions.URL_PREFIX).build();
+
+	/** The default builder for the HyperSQL jdbc url. */
+	public static final JdbcUrlBean DEFAULT_HSQLDB_URL = JdbcUrlBean.builder()
+		.protocol(HyperSQLExtensions.URL_PREFIX).build();
+
+	/** The default builder for the sqlite jdbc url. */
+	public static final JdbcUrlBean DEFAULT_SQLITE_URL = JdbcUrlBean.builder()
+		.protocol(SqliteExtensions.URL_PREFIX).build();
+
 	/** The default builder for the mysql jdbc url. */
 	public static final JdbcUrlBean DEFAULT_MYSQL_URL = JdbcUrlBean.builder()
-		.protocol("jdbc:mysql://").host("localhost").port(3306).build();
+		.protocol(MySqlConnectionsExtensions.URL_PREFIX)
+		.host(MySqlConnectionsExtensions.DEFAULT_HOST).port(MySqlConnectionsExtensions.MYSQL_PORT)
+		.build();
 
 	/** The default builder for the postgresql jdbc url. */
 	public static final JdbcUrlBean DEFAULT_POSTGRESQL_URL = JdbcUrlBean.builder()
-		.protocol("jdbc:postgresql://").host("localhost").port(5432).build();
+		.protocol(PostgreSQLConnectionsExtensions.URL_PREFIX)
+		.host(PostgreSQLConnectionsExtensions.DEFAULT_HOST)
+		.port(PostgreSQLConnectionsExtensions.DEFAULT_POSTGRESQL_PORT).build();
+
 	/** The database. */
 	String database;
 	/** The host. */

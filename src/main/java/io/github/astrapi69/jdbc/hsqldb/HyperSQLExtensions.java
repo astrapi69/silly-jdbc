@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.jdbc;
+package io.github.astrapi69.jdbc.hsqldb;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -42,11 +42,11 @@ public class HyperSQLExtensions
 	/** Constant for the drivername from HyperSQL-database. */
 	public static final String DRIVER_NAME = "org.hsqldb.jdbc.JDBCDriver";
 	/** Constant for the urlprefix from HyperSQL-database. */
-	public static final String URL_PREFIX = "jdbc:hsqldb";
+	public static final String URL_PREFIX = "jdbc:hsqldb:";
 	/** Constant for the default user from HyperSQL-database. */
-	public static final String DEFAULT_USER = "SA";
+	public static final String DEFAULT_USER = "sa";
 	/** Constant for the default password from HyperSQL-database. */
-	public static final String DEFAULT_PASSWORD = "";
+	public static final String DEFAULT_PASSWORD = "sa";
 	/** Constant for the default password from HyperSQL-database. */
 	public static final String CATALOG_TYPE_FILE = "file";
 
@@ -72,7 +72,7 @@ public class HyperSQLExtensions
 		final @NonNull String dbFileName, final @NonNull String dbUser,
 		final @NonNull String dbPassword) throws ClassNotFoundException, SQLException
 	{
-		final String url = URL_PREFIX + ":" + CATALOG_TYPE_FILE + ":" + directoryPath + dbFileName;
+		final String url = URL_PREFIX + CATALOG_TYPE_FILE + ":" + directoryPath + dbFileName;
 		Class.forName(DRIVER_NAME);
 		return DriverManager.getConnection(url, dbUser, dbPassword);
 	}

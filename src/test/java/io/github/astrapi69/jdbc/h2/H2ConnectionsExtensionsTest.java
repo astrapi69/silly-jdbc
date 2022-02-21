@@ -22,57 +22,61 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.jdbc;
+package io.github.astrapi69.jdbc.h2;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
+import org.h2.tools.Server;
+import org.junit.jupiter.api.Test;
+
+import io.github.astrapi69.file.create.FileFactory;
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.jdbc.ConnectionsExtensions;
 
 /**
- * The class {@link H2ConnectionsExtensions} have convenience methods to create and connect to H2
- * databases
- *
- * @author Asterios Raptis
+ * The unit test class for the class {@link ConnectionsExtensions}.
  */
-@UtilityClass
-public final class H2ConnectionsExtensions
+public class H2ConnectionsExtensionsTest
 {
 
-	/** H2-database constants. */
-	/** Constant for the drivername from H2-database. */
-	public static final String DRIVER_NAME = "org.h2.Driver";
-
-	/** Constant for the urlprefix from H2-database. */
-	public static final String URL_PREFIX = "jdbc:h2";
-
 	/**
-	 * Gets the H2 connection.
+	 * Test method for {@link H2ConnectionsExtensions#getConnection(String, String, String, String)}
 	 *
-	 * @param path
-	 *            the path
-	 * @param databaseName
-	 *            the database name
-	 * @param dbuser
-	 *            the dbuser
-	 * @param dbpasswort
-	 *            the dbpasswort
-	 * @return the H2 connection
 	 * @throws ClassNotFoundException
 	 *             is thrown if the Class was not found or could not be located.
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
-	public static Connection getConnection(final @NonNull String path,
-		final @NonNull String databaseName, final @NonNull String dbuser,
-		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
+	@Test
+	public void testGetH2Connection() throws ClassNotFoundException, SQLException, IOException
 	{
-		final String url = URL_PREFIX + ":" + path + databaseName;
-		Class.forName(DRIVER_NAME);
-		return DriverManager.getConnection(url, dbuser, dbpasswort);
+		String path;
+		String databaseName;
+		String dbuser;
+		String dbpasswort;
+		Connection connection;
+		// create temporary directory for database file ...
+		File h2Dir = FileFactory.newDirectory(PathFinder.getSrcTestResourcesDir(), "h2");
+		path = h2Dir.getAbsolutePath();
+		databaseName = "resourcebundles";
+		dbuser = "sa";
+		dbpasswort = "";
+		Server server = H2Launcher.newServer();
+		H2Launcher.start(server);
+		connection = H2ConnectionsExtensions.getConnection(path, databaseName, dbuser, dbpasswort);
+		assertNotNull(connection);
+		H2Launcher.stop(server);
+		// clean up
+		DeleteFileExtensions.delete(h2Dir);
 	}
 
 }

@@ -22,46 +22,34 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.springconfig;
+package io.github.astrapi69.jdbc.h2;
 
-import javax.sql.DataSource;
+import java.sql.SQLException;
 
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
+import org.h2.tools.Server;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-
-/**
- * A factory class for creating {@link DataSource} object and {@link JdbcTemplate} object
- */
-@UtilityClass
-public class SpringJdbcFactory
+public class H2Launcher
 {
 
-	/**
-	 * Factory method for create the new {@link DataSource} object from the given
-	 * {@link DataSourceBean} object.
-	 *
-	 * @param dataSourceBean
-	 *            the {@link DataSourceBean} object
-	 * @return the new {@link DataSource}
-	 */
-	public static DataSource newDataSource(final @NonNull DataSourceBean dataSourceBean)
+	public static void start(Server server) throws SQLException
 	{
-		return DataSourceBean.newDataSource(dataSourceBean);
+		server.start();
 	}
 
-	/**
-	 * Factory method for create the new {@link JdbcTemplate} object from the given
-	 * {@link DataSource} object.
-	 *
-	 * @param dataSource
-	 *            the {@link DataSource} object
-	 * @return the new {@link JdbcTemplate}
-	 */
-	public static JdbcTemplate newJdbcTemplate(final @NonNull DataSource dataSource)
+
+	public static void stop(Server server) throws SQLException
 	{
-		return new JdbcTemplate(dataSource);
+		server.stop();
+	}
+
+	public static Server newServer() throws SQLException
+	{
+		return newTcpServer("-tcpPort", "9092", "-tcpAllowOthers", "-ifNotExists");
+	}
+
+	public static Server newTcpServer(String... args) throws SQLException
+	{
+		return Server.createTcpServer(args);
 	}
 
 }

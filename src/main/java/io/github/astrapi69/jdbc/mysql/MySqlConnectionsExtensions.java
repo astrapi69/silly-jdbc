@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.jdbc;
+package io.github.astrapi69.jdbc.mysql;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -35,6 +35,7 @@ import java.util.List;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
+import io.github.astrapi69.jdbc.CreationState;
 
 /**
  * The class {@link MySqlConnectionsExtensions} have convenience methods to create and connect to
@@ -55,6 +56,15 @@ public final class MySqlConnectionsExtensions
 
 	/** Constant for the default port where the MySQL-database listen. */
 	public static final int MYSQL_PORT = 3306;
+
+	/** Constant for the default user from MySQL-database. */
+	public static final String DEFAULT_HOST = "localhost";
+
+	/** Constant for the default user from MySQL-database. */
+	public static final String DEFAULT_USER = "root";
+
+	/** Constant for the default password from MySQL-database. */
+	public static final String DEFAULT_PASSWORD = "root";
 
 	/**
 	 * Checks if the given database exists in the MySqlDatabase.

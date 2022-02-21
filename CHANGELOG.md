@@ -1,7 +1,7 @@
 ## Change log
 ----------------------
 
-Version 5.10-SNAPSHOT
+Version 6-SNAPSHOT
 -------------
 
 ADDED:
@@ -15,8 +15,9 @@ CHANGED:
 - update of io.freefair.gradle:lombok-plugin to new version 6.4.1
 - update of com.github.ben-manes.versions.gradle.plugin to new version 0.42.0
 - update of dependency spring version to 5.3.16
-- update of testng test dependency version to 7.5
-
+- remove of testng test dependency
+- update of test dependency junit-jupiter-api and junit-jupiter-engine in new version 5.8.2
+- moved all connection extension classes to its own package
 
 Version 5.9
 -------------

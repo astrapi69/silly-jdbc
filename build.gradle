@@ -59,12 +59,28 @@ sourceCompatibility = "$projectSourceCompatibility" as Object
 repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+        name "Sonatype Nexus Releases"
+        url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+        mavenContent {
+            releasesOnly()
+        }
+    }
+    maven {
+        name "Sonatype Nexus Snapshots"
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+        mavenContent {
+            snapshotsOnly()
+        }
+    }
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
     // uncomment the next line for build with compiler argument -Xlint:deprecation
     // options.compilerArgs << "-Xlint:deprecation"
+    // uncomment the next line for build with compiler argument -Xlint:unchecked
+    // options.compilerArgs << "-Xlint:unchecked"
 }
 
 task sourcesJar(type: Jar) {
@@ -79,25 +95,11 @@ task javadocJar(type: Jar) {
 }
 
 javadoc {
+    failOnError = false
     if(JavaVersion.current().isJava9Compatible()) {
         options.addBooleanOption("html5", true)
     }
-    failOnError = false
-    exclude 'io/github/astrapi69/**'
 }
-
-test {
-    useTestNG()
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        html.enabled true
-    }
-}
-
-check.dependsOn jacocoTestReport
 
 def releaseVersion = !version.endsWith("SNAPSHOT")
 
@@ -214,12 +216,31 @@ license {
 gradle.startParameter.excludedTaskNames += "licenseMain"
 gradle.startParameter.excludedTaskNames += "licenseTest"
 
+test {
+    useJUnitPlatform()
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
+}
+
+check.dependsOn jacocoTestReport
+
 dependencies {
     compileOnly("org.projectlombok:lombok:$lombokVersion")
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
     implementation("org.springframework:spring-context:$springContextVersion")
     implementation("org.springframework:spring-orm:$springOrmVersion")
-    implementation("org.projectlombok:lombok:$lombokVersion")
-    testImplementation("org.meanbean:meanbean:$meanbeanVersion")
-    testImplementation("org.testng:testng:$testngVersion")
+
+    testImplementation("io.github.astrapi69:file-worker:$fileWorkerVersion")
+    testImplementation("org.xerial:sqlite-jdbc:$sqliteJdbcVersion")
+    testImplementation("org.hsqldb:hsqldb:$hsqldbVersion")
+    testImplementation("com.h2database:h2:$h2Version")
+    testImplementation("org.postgresql:postgresql:$postgresqlVersion")
+    testImplementation("mysql:mysql-connector-java:$mysqlVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
 }

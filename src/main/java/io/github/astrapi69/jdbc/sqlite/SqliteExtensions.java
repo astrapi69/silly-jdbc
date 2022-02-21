@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.jdbc;
+package io.github.astrapi69.jdbc.sqlite;
 
 import java.io.File;
 import java.sql.Connection;
@@ -30,26 +30,34 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import lombok.NonNull;
+import io.github.astrapi69.jdbc.ConnectionsExtensions;
+import io.github.astrapi69.jdbc.CreationState;
 
 /**
- * The class {@link SqlliteExtensions} have convenience methods to create and connect to sqllite
+ * The class {@link SqliteExtensions} have convenience methods to create and connect to sqllite
  * databases
  *
  * @author Asterios Raptis
  */
-public class SqlliteExtensions
+public class SqliteExtensions
 {
 
 	/** sqllite-database constants. */
 	/**
-	 * Constant for the driver name from sqllite-database.
+	 * Constant for the driver name from sqlite-database.
 	 */
 	public static final String DRIVER_NAME = "org.sqlite.JDBC";
 
 	/**
-	 * Constant for the url prefix from sqllite-database.
+	 * Constant for the url prefix from sqlite-database.
 	 */
-	public static final String URL_PREFIX = "jdbc:sqlite";
+	public static final String URL_PREFIX = "jdbc:sqlite:";
+
+	/** Constant for the default user from sqlite-database. */
+	public static final String DEFAULT_USER = "sa";
+
+	/** Constant for the default password from sqlite-database. */
+	public static final String DEFAULT_PASSWORD = "sa";
 
 	/**
 	 * Creates a new sqllite database with the given absolute path directory and the given file name
@@ -95,7 +103,9 @@ public class SqlliteExtensions
 	public static Connection getConnection(final @NonNull String directoryPath,
 		final @NonNull String dbFileName) throws ClassNotFoundException, SQLException
 	{
-		final String url = URL_PREFIX + ":" + directoryPath + dbFileName;
+		String slashIfMissing = !directoryPath.endsWith("/") ? "/" : "";
+		String path = directoryPath + slashIfMissing;
+		final String url = URL_PREFIX + path + dbFileName;
 		Class.forName(DRIVER_NAME);
 		return DriverManager.getConnection(url);
 	}
@@ -108,7 +118,7 @@ public class SqlliteExtensions
 	 * @param tableName
 	 *            the table name
 	 */
-	public void deleteAllRows(Connection connection, String tableName) throws SQLException
+	public static void deleteAllRows(Connection connection, String tableName) throws SQLException
 	{
 		String sql = "DELETE from " + tableName + ";";
 		ConnectionsExtensions.executeSqlScript(connection, sql, true);
