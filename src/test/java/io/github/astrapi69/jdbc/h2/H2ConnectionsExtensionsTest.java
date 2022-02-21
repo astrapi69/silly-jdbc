@@ -68,8 +68,6 @@ public class H2ConnectionsExtensionsTest
 		File srcTestResourcesDir = PathFinder.getSrcTestResourcesDir();
 		path = srcTestResourcesDir.getAbsolutePath();
 		databaseName = "resourcebundles";
-		// create temporary directory for database file ...
-		databaseFile = FileFactory.newFile(srcTestResourcesDir, databaseName + ".mv.db");
 		dbuser = "sa";
 		dbpasswort = "";
 		Server server = H2Launcher.newServer();
@@ -78,7 +76,9 @@ public class H2ConnectionsExtensionsTest
 		assertNotNull(connection);
 		H2Launcher.stop(server);
 		// clean up
-		DeleteFileExtensions.delete(databaseFile);
+		// create temporary directory for database file ...
+//		databaseFile = FileFactory.newFile(srcTestResourcesDir, databaseName + ".mv.db");
+//		DeleteFileExtensions.delete(databaseFile);
 	}
 
 }
