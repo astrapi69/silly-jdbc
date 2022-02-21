@@ -24,6 +24,8 @@
  */
 package io.github.astrapi69.jdbc.hsqldb;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,9 +33,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 
+import lombok.NonNull;
 import lombok.extern.java.Log;
 
 import org.junit.jupiter.api.Test;
+
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
 
 @Log
 class HyperSQLExtensionsTest
@@ -42,13 +48,51 @@ class HyperSQLExtensionsTest
 	String tableName = "accounts";
 
 	@Test
-	void getConnection() throws SQLException, ClassNotFoundException
+	void getFileConnection() throws SQLException, ClassNotFoundException, IOException
 	{
-		System.out.println("Database in Memory:");
-		ResultSet rs = null;
 		Statement stmt;
 		Connection connection;
-		String query;
+		String path;
+		String databaseName;
+		String dbuser;
+		String dbpasswort;
+		File databaseDirectory;
+		File srcTestResourcesDir = PathFinder.getSrcTestResourcesDir();
+		databaseDirectory = PathFinder.getRelativePath(srcTestResourcesDir, "hsql");
+
+		path = databaseDirectory.getAbsolutePath() + "/";
+
+		dbuser = "sa";
+		dbpasswort = "";
+		databaseName = "accounts";
+
+		connection = HyperSQLExtensions.getFileConnection(path, databaseName, dbuser, dbpasswort);
+
+		// SQL statement for creating a new table
+		String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (\n"
+			+ "	id integer PRIMARY KEY,\n" + "	name CHAR(50) NOT NULL,\n" + "	balance bigint\n"
+			+ ");";
+
+		stmt = connection.createStatement();
+		stmt.executeQuery(sql);
+
+		insert(connection, 1, "Superman", 3000);
+		insert(connection, 2, "Spiderman", 4000);
+		insert(connection, 3, "Batman", 5000);
+		selectAll(connection);
+		findBalanceGreaterThan(connection, 3900);
+		update(connection, 3, "Batman", 5500);
+		selectAll(connection);
+		delete(connection, 3);
+		DeleteFileExtensions.delete(databaseDirectory);
+	}
+
+	@Test
+	void getMemoryConnection() throws SQLException, ClassNotFoundException
+	{
+		System.out.println("Database in Memory:");
+		Statement stmt;
+		Connection connection;
 
 		// SQL statement for creating a new table
 		String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (\n"
@@ -60,9 +104,10 @@ class HyperSQLExtensionsTest
 		stmt = connection.createStatement();
 		stmt.executeQuery(sql);
 
-		insert(connection, "Superman", 3000);
-		insert(connection, "Spiderman", 4000);
-		insert(connection, "Batman", 5000);
+
+		insert(connection, 1, "Superman", 3000);
+		insert(connection, 2, "Spiderman", 4000);
+		insert(connection, 3, "Batman", 5000);
 		selectAll(connection);
 		findBalanceGreaterThan(connection, 3900);
 		update(connection, 3, "Batman", 5500);
@@ -70,14 +115,13 @@ class HyperSQLExtensionsTest
 		delete(connection, 3);
 	}
 
-
 	/**
 	 * select all rows in the accounts table
 	 *
 	 * @param connection
 	 *            the connection to the sqlite database
 	 */
-	public void selectAll(Connection connection)
+	public void selectAll(final @NonNull Connection connection)
 	{
 		String sql = "SELECT id, name, balance FROM " + tableName;
 
@@ -103,11 +147,11 @@ class HyperSQLExtensionsTest
 	 * @param balance
 	 *            the balance of the account
 	 */
-	public void findBalanceGreaterThan(Connection connection, double balance)
+	public void findBalanceGreaterThan(final @NonNull Connection connection, double balance)
 	{
 		String sql = "SELECT id, name, balance " + "FROM " + tableName + " WHERE balance > ?";
 
-		try (Connection conn = connection; PreparedStatement pstmt = conn.prepareStatement(sql))
+		try (PreparedStatement pstmt = connection.prepareStatement(sql))
 		{
 			pstmt.setDouble(1, balance);
 			ResultSet rs = pstmt.executeQuery();
@@ -133,14 +177,15 @@ class HyperSQLExtensionsTest
 	 * @param balance
 	 *            the balance of the account
 	 */
-	public void insert(Connection connection, String name, double balance)
+	public void insert(final @NonNull Connection connection, int id, String name, double balance)
 	{
-		String sql = "INSERT INTO " + tableName + "(name,balance) VALUES(?,?)";
+		String sql = "INSERT INTO " + tableName + "(id,name,balance) VALUES(?,?,?)";
 
-		try (Connection conn = connection; PreparedStatement pstmt = conn.prepareStatement(sql))
+		try (PreparedStatement pstmt = connection.prepareStatement(sql))
 		{
-			pstmt.setString(1, name);
-			pstmt.setDouble(2, balance);
+			pstmt.setInt(1, id);
+			pstmt.setString(2, name);
+			pstmt.setDouble(3, balance);
 			pstmt.executeUpdate();
 		}
 		catch (SQLException e)
@@ -161,11 +206,11 @@ class HyperSQLExtensionsTest
 	 * @param balance
 	 *            the balance of the account
 	 */
-	public void update(Connection connection, int id, String name, double balance)
+	public void update(final @NonNull Connection connection, int id, String name, double balance)
 	{
 		String sql = "UPDATE " + tableName + " SET name = ? , " + "balance = ? " + "WHERE id = ?";
 
-		try (Connection conn = connection; PreparedStatement pstmt = conn.prepareStatement(sql))
+		try (PreparedStatement pstmt = connection.prepareStatement(sql))
 		{
 			pstmt.setString(1, name);
 			pstmt.setDouble(2, balance);
@@ -186,7 +231,7 @@ class HyperSQLExtensionsTest
 	 * @param id
 	 *            the id of the account
 	 */
-	public void delete(Connection connection, int id)
+	public void delete(final @NonNull Connection connection, int id)
 	{
 		String sql = "DELETE FROM " + tableName + " WHERE id = ?";
 

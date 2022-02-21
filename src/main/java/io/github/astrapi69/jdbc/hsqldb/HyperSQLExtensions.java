@@ -50,6 +50,8 @@ public class HyperSQLExtensions
 	public static final String CATALOG_TYPE_FILE = "file";
 	/** Constant for the default password from HyperSQL-database. */
 	public static final String CATALOG_TYPE_MEMORY = "mem";
+	/** Constant for the default password from HyperSQL-database. */
+	public static final String CATALOG_TYPE_RESOURCE = "res";
 
 	/**
 	 * Gets the HyperSQL connection to a file catalog

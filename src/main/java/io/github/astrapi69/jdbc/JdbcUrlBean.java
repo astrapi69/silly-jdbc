@@ -48,7 +48,7 @@ import io.github.astrapi69.jdbc.sqlite.SqliteExtensions;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class JdbcUrlBean
+public class JdbcUrlBean implements Cloneable
 {
 
 	/** The default builder for the H2 jdbc url. */
@@ -86,6 +86,29 @@ public class JdbcUrlBean
 	int port;
 	/** The protocol. */
 	String protocol;
+	/** The protocol identifier of the database. This is only for some databases like hsqldb */
+	String protocolIdentifier;
+
+	/**
+	 * Builds a H2 jdbc url with the given {@link JdbcUrlBean} object.
+	 *
+	 * @param bean
+	 *            the bean
+	 * @return the string
+	 */
+	public static String newH2JdbcUrl(final JdbcUrlBean bean)
+	{
+		final StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(bean.getProtocol()).append(bean.getDatabase());
+		if (bean.getParameters() != null && !bean.getParameters().isEmpty())
+		{
+			for (final String parameter : bean.getParameters())
+			{
+				stringBuilder.append(";").append(parameter);
+			}
+		}
+		return stringBuilder.toString();
+	}
 
 	/**
 	 * Builds a default mysql jdbc url with the given database.
@@ -114,24 +137,34 @@ public class JdbcUrlBean
 	}
 
 	/**
-	 * Builds a H2 jdbc url with the given {@link JdbcUrlBean} object.
+	 * Builds a HyperSQL jdbc url with the given {@link JdbcUrlBean} object.
 	 *
 	 * @param bean
 	 *            the bean
 	 * @return the string
 	 */
-	public static String newH2JdbcUrl(final JdbcUrlBean bean)
+	public static String newHsqldbJdbcUrl(final JdbcUrlBean bean)
 	{
-		final StringBuilder sb = new StringBuilder();
-		sb.append(bean.getProtocol()).append(bean.getDatabase());
+		final StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(bean.getProtocol()).append(bean.getProtocolIdentifier()).append(":")
+			.append(bean.getDatabase());
 		if (bean.getParameters() != null && !bean.getParameters().isEmpty())
 		{
 			for (final String parameter : bean.getParameters())
 			{
-				sb.append(";").append(parameter);
+				stringBuilder.append(";").append(parameter);
 			}
 		}
-		return sb.toString();
+		return stringBuilder.toString();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Object clone() throws CloneNotSupportedException
+	{
+		return this.toBuilder().build();
 	}
 
 	/**
@@ -160,10 +193,10 @@ public class JdbcUrlBean
 
 	public static String buildUrlString(JdbcUrlBean bean)
 	{
-		final StringBuilder sb = new StringBuilder();
-		sb.append(bean.getProtocol()).append(bean.getHost()).append(":").append(bean.getPort())
-			.append("/").append(bean.getDatabase());
-		return sb.toString();
+		final StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(bean.getProtocol()).append(bean.getHost()).append(":")
+			.append(bean.getPort()).append("/").append(bean.getDatabase());
+		return stringBuilder.toString();
 	}
 
 }

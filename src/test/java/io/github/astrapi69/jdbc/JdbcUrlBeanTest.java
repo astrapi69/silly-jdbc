@@ -28,11 +28,42 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import io.github.astrapi69.jdbc.hsqldb.HyperSQLExtensions;
+
 /**
  * The test class for {@link JdbcUrlBean}
  */
 public class JdbcUrlBeanTest
 {
+
+	@Test
+	public void testNewHsqldbJdbcUrl()
+	{
+		String expected;
+		String actual;
+		JdbcUrlBean jdbcUrlBean;
+
+		expected = "jdbc:hsqldb:mem:accounts;shutdown=true";
+		jdbcUrlBean = JdbcUrlBean.builder().protocol(HyperSQLExtensions.URL_PREFIX)
+			.protocolIdentifier(HyperSQLExtensions.CATALOG_TYPE_MEMORY).database("accounts")
+			.parameter("shutdown=true").build();
+		actual = JdbcUrlBean.newHsqldbJdbcUrl(jdbcUrlBean);
+		assertEquals(expected, actual);
+
+		expected = "jdbc:hsqldb:file:accounts;shutdown=true";
+		jdbcUrlBean = JdbcUrlBean.builder().protocol(HyperSQLExtensions.URL_PREFIX)
+			.protocolIdentifier(HyperSQLExtensions.CATALOG_TYPE_FILE).database("accounts")
+			.parameter("shutdown=true").build();
+		actual = JdbcUrlBean.newHsqldbJdbcUrl(jdbcUrlBean);
+		assertEquals(expected, actual);
+
+		expected = "jdbc:hsqldb:res:accounts;shutdown=true";
+		jdbcUrlBean = JdbcUrlBean.builder().protocol(HyperSQLExtensions.URL_PREFIX)
+			.protocolIdentifier(HyperSQLExtensions.CATALOG_TYPE_RESOURCE).database("accounts")
+			.parameter("shutdown=true").build();
+		actual = JdbcUrlBean.newHsqldbJdbcUrl(jdbcUrlBean);
+		assertEquals(expected, actual);
+	}
 
 	@Test
 	public void testNewH2JdbcUrl()
@@ -83,4 +114,25 @@ public class JdbcUrlBeanTest
 
 	}
 
+	@Test
+	void testNewDefaultMysqlJdbcUrl()
+	{
+		String expected;
+		String actual;
+
+		expected = "jdbc:mysql://localhost:3306/resourcebundles";
+		actual = JdbcUrlBean.newDefaultMysqlJdbcUrl("resourcebundles");
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	void testNewDefaultPostgresJdbcUrl()
+	{
+		String expected;
+		String actual;
+
+		expected = "jdbc:postgresql://localhost:5432/resourcebundles";
+		actual = JdbcUrlBean.newDefaultPostgresJdbcUrl("resourcebundles");
+		assertEquals(expected, actual);
+	}
 }
