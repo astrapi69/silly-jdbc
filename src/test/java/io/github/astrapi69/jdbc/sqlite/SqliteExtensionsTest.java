@@ -63,8 +63,7 @@ public class SqliteExtensionsTest
 		Connection connection = SqliteExtensions.getMemoryConnection(databaseName);
 
 		// SQL statement for creating a new table
-		String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (\n"
-			+ "	id integer PRIMARY KEY,\n" + "	name text NOT NULL,\n" + "	balance real\n" + ");";
+		String sql = createTableStatement();
 		ConnectionsExtensions.executeSqlScript(connection, sql, true);
 		SqliteExtensions.deleteAllRows(SqliteExtensions.getMemoryConnection(databaseName),
 			"accounts");
@@ -80,6 +79,12 @@ public class SqliteExtensionsTest
 		DeleteFileExtensions.delete(memoryFile);
 	}
 
+	public String createTableStatement()
+	{
+		return "CREATE TABLE IF NOT EXISTS " + tableName + " (\n" + "	id integer PRIMARY KEY,\n"
+			+ "	name text NOT NULL,\n" + "	balance real\n" + ");";
+	}
+
 	@Test
 	void getFileConnection() throws SQLException, ClassNotFoundException, IOException
 	{
@@ -93,8 +98,7 @@ public class SqliteExtensionsTest
 		assertEquals(creationState, CreationState.ALREADY_EXISTS);
 
 		// SQL statement for creating a new table
-		String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (\n"
-			+ "	id integer PRIMARY KEY,\n" + "	name text NOT NULL,\n" + "	balance real\n" + ");";
+		String sql = createTableStatement();
 		ConnectionsExtensions.executeSqlScript(connection, sql, true);
 		SqliteExtensions.deleteAllRows(SqliteExtensions.getFileConnection(path, databaseName),
 			"accounts");
@@ -107,7 +111,7 @@ public class SqliteExtensionsTest
 		selectAll(SqliteExtensions.getFileConnection(path, databaseName));
 		delete(SqliteExtensions.getFileConnection(path, databaseName), 3);
 		// clean up
-		DeleteFileExtensions.delete(sqliteDir);
+		 DeleteFileExtensions.delete(sqliteDir);
 	}
 
 	/**
