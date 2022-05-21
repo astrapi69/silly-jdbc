@@ -7,14 +7,15 @@ Version 6-SNAPSHOT
 ADDED:
 
 - created new connection classes for sqllite and HyperSQL
-- new gradle plugin spotless in version 6.3.0
+- new gradle plugin spotless in version 6.5.2
 
 CHANGED:
 
 - update gradle to new version 7.4.2
+- update of dependency lombok version to 1.18.24
 - update of io.freefair.gradle:lombok-plugin to new version 6.4.3
 - update of com.github.ben-manes.versions.gradle.plugin to new version 0.42.0
-- update of dependency spring version to 5.3.16
+- update of dependency spring version to 5.3.20
 - remove of testng test dependency
 - update of test dependency junit-jupiter-api and junit-jupiter-engine in new version 5.8.2
 - moved all connection extension classes to its own package
