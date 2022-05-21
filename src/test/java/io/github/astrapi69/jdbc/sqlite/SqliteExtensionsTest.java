@@ -111,7 +111,7 @@ public class SqliteExtensionsTest
 		selectAll(SqliteExtensions.getFileConnection(path, databaseName));
 		delete(SqliteExtensions.getFileConnection(path, databaseName), 3);
 		// clean up
-		 DeleteFileExtensions.delete(sqliteDir);
+		DeleteFileExtensions.delete(sqliteDir);
 	}
 
 	/**

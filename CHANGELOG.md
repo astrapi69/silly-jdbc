@@ -11,8 +11,8 @@ ADDED:
 
 CHANGED:
 
-- update gradle to new version 7.4
-- update of io.freefair.gradle:lombok-plugin to new version 6.4.1
+- update gradle to new version 7.4.2
+- update of io.freefair.gradle:lombok-plugin to new version 6.4.3
 - update of com.github.ben-manes.versions.gradle.plugin to new version 0.42.0
 - update of dependency spring version to 5.3.16
 - remove of testng test dependency
