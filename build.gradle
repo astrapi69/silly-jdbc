@@ -235,6 +235,7 @@ dependencies {
     implementation("org.springframework:spring-context:$springContextVersion")
     implementation("org.springframework:spring-orm:$springOrmVersion")
 
+    testImplementation("org.apache.derby:derby:$derbyVersion")
     testImplementation("io.github.astrapi69:file-worker:$fileWorkerVersion")
     testImplementation("org.xerial:sqlite-jdbc:$sqliteJdbcVersion")
     testImplementation("org.hsqldb:hsqldb:$hsqldbVersion")
