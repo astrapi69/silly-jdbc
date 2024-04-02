@@ -7,7 +7,9 @@ Version 6-SNAPSHOT
 ADDED:
 
 - created new connection classes for sqllite and HyperSQL
+- created new method in ConnectionsExtensions for execute directly from sql script file
 - new gradle plugin spotless in version 6.5.2
+- created new unit tests for execute sqlite script files
 
 CHANGED:
 

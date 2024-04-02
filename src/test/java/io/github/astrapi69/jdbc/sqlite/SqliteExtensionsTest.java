@@ -26,7 +26,9 @@ package io.github.astrapi69.jdbc.sqlite;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -52,14 +54,51 @@ public class SqliteExtensionsTest
 	String tableName = "accounts";
 
 	@Test
+	void executeSqliteScript() throws SQLException, ClassNotFoundException, IOException
+	{
+		File srcTestResourcesDir = PathFinder.getSrcTestResourcesDir();
+		File databaseFile;
+		String databaseName = "library-new" + ".db";
+
+		databaseFile = PathFinder.getRelativePath(srcTestResourcesDir, databaseName);
+		if (databaseFile.exists())
+		{
+			databaseFile.delete();
+		}
+
+		File createDbScriptFile = PathFinder.getRelativePath(srcTestResourcesDir, "sqlite",
+			"structure_library.sql");
+		CreationState creationState = SqliteExtensions
+			.newFileDatabase(srcTestResourcesDir.getAbsolutePath(), databaseName);
+
+		Connection connection = SqliteExtensions
+			.getFileConnection(srcTestResourcesDir.getAbsolutePath(), databaseName);
+		BufferedReader bufferedReader = new BufferedReader(new FileReader(createDbScriptFile));
+		ConnectionsExtensions.executeSqlScript(bufferedReader, connection, true);
+
+
+		File insertDataScriptFile = PathFinder.getRelativePath(srcTestResourcesDir, "sqlite",
+			"data_library.sql");
+
+		bufferedReader = new BufferedReader(new FileReader(insertDataScriptFile));
+		ConnectionsExtensions.executeSqlScript(bufferedReader, connection, true);
+
+		if (databaseFile.exists())
+		{
+			databaseFile.delete();
+		}
+	}
+
+
+	@Test
 	void getMemoryConnection() throws SQLException, ClassNotFoundException, IOException
 	{
 		// create temporary directory for database file ...
 
 		File projectDirectory = PathFinder.getProjectDirectory();
-		String path = projectDirectory.getAbsolutePath();
 		String databaseName = tableName + ".sqlite";
 		File memoryFile = FileFactory.newFile(projectDirectory, ":memory:" + databaseName);
+		System.out.println(memoryFile.getAbsolutePath());
 		Connection connection = SqliteExtensions.getMemoryConnection(databaseName);
 
 		// SQL statement for creating a new table
