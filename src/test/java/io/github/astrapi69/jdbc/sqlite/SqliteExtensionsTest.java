@@ -37,8 +37,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 
-import lombok.extern.java.Log;
-
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.file.create.FileFactory;
@@ -46,6 +44,7 @@ import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
 import io.github.astrapi69.jdbc.ConnectionsExtensions;
 import io.github.astrapi69.jdbc.CreationState;
+import lombok.extern.java.Log;
 
 @Log
 public class SqliteExtensionsTest
@@ -128,7 +127,7 @@ public class SqliteExtensionsTest
 	void getFileConnection() throws SQLException, ClassNotFoundException, IOException
 	{
 		// create temporary directory for database file ...
-		File sqliteDir = FileFactory.newDirectory(PathFinder.getSrcTestResourcesDir(), "sqlite");
+		File sqliteDir = FileFactory.newFile(PathFinder.getSrcTestResourcesDir(), "sqlite");
 		String path = sqliteDir.getAbsolutePath();
 		String databaseName = tableName + ".sqlite";
 		Connection connection = SqliteExtensions.getFileConnection(path, databaseName);
@@ -150,7 +149,8 @@ public class SqliteExtensionsTest
 		selectAll(SqliteExtensions.getFileConnection(path, databaseName));
 		delete(SqliteExtensions.getFileConnection(path, databaseName), 3);
 		// clean up
-		DeleteFileExtensions.delete(sqliteDir);
+		File sqliteDatabaseFile = FileFactory.newFile(sqliteDir, databaseName);
+		DeleteFileExtensions.delete(sqliteDatabaseFile);
 	}
 
 	/**

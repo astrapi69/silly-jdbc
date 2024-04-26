@@ -26,6 +26,11 @@ package io.github.astrapi69.jdbc;
 
 import java.util.List;
 
+import io.github.astrapi69.jdbc.h2.H2ConnectionsExtensions;
+import io.github.astrapi69.jdbc.hsqldb.HyperSQLExtensions;
+import io.github.astrapi69.jdbc.mysql.MySqlConnectionsExtensions;
+import io.github.astrapi69.jdbc.postgresql.PostgreSQLConnectionsExtensions;
+import io.github.astrapi69.jdbc.sqlite.SqliteExtensions;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,11 +38,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Singular;
 import lombok.experimental.FieldDefaults;
-import io.github.astrapi69.jdbc.h2.H2ConnectionsExtensions;
-import io.github.astrapi69.jdbc.hsqldb.HyperSQLExtensions;
-import io.github.astrapi69.jdbc.mysql.MySqlConnectionsExtensions;
-import io.github.astrapi69.jdbc.postgresql.PostgreSQLConnectionsExtensions;
-import io.github.astrapi69.jdbc.sqlite.SqliteExtensions;
 
 /**
  * The class {@link JdbcUrlBean} hold data to build a jdbc url and factory methods for create a jdbc

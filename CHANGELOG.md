@@ -13,13 +13,14 @@ ADDED:
 
 CHANGED:
 
-- update gradle to new version 7.4.2
-- update of dependency lombok version to 1.18.24
-- update of io.freefair.gradle:lombok-plugin to new version 6.4.3
-- update of com.github.ben-manes.versions.gradle.plugin to new version 0.42.0
-- update of dependency spring version to 5.3.20
+- update to jdk version 17
+- update gradle to new version 8.7
+- update of com.github.ben-manes.versions.gradle.plugin to new version 0.51.0
+- update of gradle-plugin dependency 'org.ajoberstar.grgit:grgit-gradle' in version 5.2.2
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new minor version 6.25.0
+- update of dependency spring version to 6.1.6
 - remove of testng test dependency
-- update of test dependency junit-jupiter-api and junit-jupiter-engine in new version 5.8.2
+- update of test dependency junit-jupiter-api and junit-jupiter-engine in new version 5.11.0-M1
 - moved all connection extension classes to its own package
 
 Version 5.9

@@ -33,9 +33,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.astrapi69.jdbc.CreationState;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import io.github.astrapi69.jdbc.CreationState;
 
 /**
  * The class {@link MySqlConnectionsExtensions} have convenience methods to create and connect to

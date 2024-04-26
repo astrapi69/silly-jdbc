@@ -26,14 +26,6 @@ package io.github.astrapi69.springconfig;
 
 import javax.sql.DataSource;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.experimental.FieldDefaults;
-
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import io.github.astrapi69.jdbc.h2.H2ConnectionsExtensions;
@@ -41,6 +33,13 @@ import io.github.astrapi69.jdbc.hsqldb.HyperSQLExtensions;
 import io.github.astrapi69.jdbc.mysql.MySqlConnectionsExtensions;
 import io.github.astrapi69.jdbc.postgresql.PostgreSQLConnectionsExtensions;
 import io.github.astrapi69.jdbc.sqlite.SqliteExtensions;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.experimental.FieldDefaults;
 
 /**
  * The class {@link DataSourceBean} encapsulates the data for a <code>DataSource</code> object

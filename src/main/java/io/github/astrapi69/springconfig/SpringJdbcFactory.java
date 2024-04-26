@@ -26,10 +26,10 @@ package io.github.astrapi69.springconfig;
 
 import javax.sql.DataSource;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-
-import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * A factory class for creating {@link DataSource} object and {@link JdbcTemplate} object

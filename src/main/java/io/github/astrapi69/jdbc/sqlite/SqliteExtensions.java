@@ -29,9 +29,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import lombok.NonNull;
 import io.github.astrapi69.jdbc.ConnectionsExtensions;
 import io.github.astrapi69.jdbc.CreationState;
+import lombok.NonNull;
 
 /**
  * The class {@link SqliteExtensions} have convenience methods to create and connect to sqllite
@@ -137,6 +137,9 @@ public class SqliteExtensions
 	 *            the connection
 	 * @param tableName
 	 *            the table name
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
 	 */
 	public static void deleteAllRows(Connection connection, String tableName) throws SQLException
 	{

@@ -30,11 +30,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 import io.github.astrapi69.jdbc.CreationState;
 import io.github.astrapi69.jdbc.JdbcConnectionInfo;
 import io.github.astrapi69.jdbc.JdbcUrlBean;
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link PostgreSQLConnectionsExtensions} have convenience methods to create and connect
@@ -65,10 +65,19 @@ public final class PostgreSQLConnectionsExtensions
 	/** Constant for the default password from PostgreSQL-database. */
 	public static final String DEFAULT_PASSWORD = "postgres";
 
+	/** Constant for the default key of the host from PostgreSQL-database */
 	public static final String APP_DB_HOST = "app.db-host";
+
+	/** Constant for the default key of the port from PostgreSQL-database */
 	public static final String APP_DB_PORT = "app.db-port";
+
+	/** Constant for the default key of the name from PostgreSQL-database */
 	public static final String APP_DB_NAME = "app.db-name";
+
+	/** Constant for the default key of the username from PostgreSQL-database */
 	public static final String APP_DB_USERNAME = "app.db-username";
+
+	/** Constant for the default key of the password from PostgreSQL-database */
 	public static final String APP_DB_PASSWORD = "app.db-password";
 
 	/**

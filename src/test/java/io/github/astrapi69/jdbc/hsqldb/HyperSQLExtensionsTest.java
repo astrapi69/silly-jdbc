@@ -33,13 +33,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 
-import lombok.NonNull;
-import lombok.extern.java.Log;
-
 import org.junit.jupiter.api.Test;
 
 import io.github.astrapi69.file.delete.DeleteFileExtensions;
 import io.github.astrapi69.file.search.PathFinder;
+import lombok.NonNull;
+import lombok.extern.java.Log;
 
 @Log
 class HyperSQLExtensionsTest
