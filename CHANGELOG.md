@@ -1,6 +1,28 @@
 ## Change log
 ----------------------
 
+Version 6
+-------------
+
+ADDED:
+
+- created new connection classes for sqllite and HyperSQL
+- created new method in ConnectionsExtensions for execute directly from sql script file
+- new gradle plugin spotless in version 6.5.2
+- created new unit tests for execute sqlite script files
+
+CHANGED:
+
+- update to jdk version 17
+- update gradle to new version 8.7
+- update of com.github.ben-manes.versions.gradle.plugin to new version 0.51.0
+- update of gradle-plugin dependency 'org.ajoberstar.grgit:grgit-gradle' in version 5.2.2
+- update of gradle-plugin dependency 'com.diffplug.spotless:spotless-plugin-gradle' to new minor version 6.25.0
+- update of dependency spring version to 6.1.6
+- remove of testng test dependency
+- update of test dependency junit-jupiter-api and junit-jupiter-engine in new version 5.11.0-M1
+- moved all connection extension classes to its own package
+
 Version 5.9
 -------------
 
@@ -73,12 +95,10 @@ Version 5.2
 -------------
 
 ADDED:
- 
+
 - this changelog file
 - created PULL_REQUEST_TEMPLATE.md file
 - created CODE_OF_CONDUCT.md file
 - created CONTRIBUTING.md file
 - provide package.html for the javadoc of packages
 - moved classes from obsolet jcommons-lang project
-
-

@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.jdbc;
+package io.github.astrapi69.jdbc.postgresql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,6 +30,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+import io.github.astrapi69.jdbc.CreationState;
+import io.github.astrapi69.jdbc.JdbcConnectionInfo;
+import io.github.astrapi69.jdbc.JdbcUrlBean;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -45,21 +48,36 @@ public final class PostgreSQLConnectionsExtensions
 
 	/** PostgreSQL-database constants. */
 	/** Constant for the drivername from PostgreSQL-database. */
-	public static final String DRIVERNAME = "org.postgresql.Driver";
+	public static final String DRIVER_NAME = "org.postgresql.Driver";
 
 	/** Constant for the urlprefix from PostgreSQL-database. */
 	public static final String URL_PREFIX = "jdbc:postgresql://";
 
 	/** Constant for the port where the PostgreSQL-database listen. */
-	public static final int POSTGRESQL_PORT = 5432;
+	public static final int DEFAULT_POSTGRESQL_PORT = 5432;
 
 	/** Constant for the default user from PostgreSQL-database. */
-	public static final String POSTGRESQL_DEFAULT_USER = "postgres";
+	public static final String DEFAULT_USER = "postgres";
 
+	/** Constant for the default user from PostgreSQL-database. */
+	public static final String DEFAULT_HOST = "localhost";
+
+	/** Constant for the default password from PostgreSQL-database. */
+	public static final String DEFAULT_PASSWORD = "postgres";
+
+	/** Constant for the default key of the host from PostgreSQL-database */
 	public static final String APP_DB_HOST = "app.db-host";
+
+	/** Constant for the default key of the port from PostgreSQL-database */
 	public static final String APP_DB_PORT = "app.db-port";
+
+	/** Constant for the default key of the name from PostgreSQL-database */
 	public static final String APP_DB_NAME = "app.db-name";
+
+	/** Constant for the default key of the username from PostgreSQL-database */
 	public static final String APP_DB_USERNAME = "app.db-username";
+
+	/** Constant for the default key of the password from PostgreSQL-database */
 	public static final String APP_DB_PASSWORD = "app.db-password";
 
 	/**
@@ -118,7 +136,7 @@ public final class PostgreSQLConnectionsExtensions
 		final @NonNull String databaseName, final @NonNull String dbuser,
 		final @NonNull String dbpasswort)
 	{
-		return existsDatabase(hostname, POSTGRESQL_PORT, databaseName, dbuser, dbpasswort);
+		return existsDatabase(hostname, DEFAULT_POSTGRESQL_PORT, databaseName, dbuser, dbpasswort);
 	}
 
 	/**
@@ -173,7 +191,7 @@ public final class PostgreSQLConnectionsExtensions
 		final @NonNull String databaseName, final @NonNull String dbuser,
 		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
 	{
-		return getConnection(hostname, POSTGRESQL_PORT, databaseName, dbuser, dbpasswort);
+		return getConnection(hostname, DEFAULT_POSTGRESQL_PORT, databaseName, dbuser, dbpasswort);
 	}
 
 	/**
@@ -207,7 +225,7 @@ public final class PostgreSQLConnectionsExtensions
 		sb.append(portNumber);
 		sb.append("/");
 		sb.append(databaseName);
-		Class.forName(DRIVERNAME);
+		Class.forName(DRIVER_NAME);
 		return getConnection(sb.toString().trim(), dbuser, dbpasswort);
 	}
 
@@ -229,6 +247,22 @@ public final class PostgreSQLConnectionsExtensions
 		final @NonNull String dbpasswort) throws SQLException
 	{
 		return DriverManager.getConnection(url, dbuser, dbpasswort);
+	}
+
+	/**
+	 * Gets the postgres sql connection with the given url and the default user and the default
+	 * password
+	 *
+	 * @param url
+	 *            the database url
+	 * @return the postgres sql connection
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 */
+	public static Connection getConnection(final @NonNull String url) throws SQLException
+	{
+		return getConnection(url, DEFAULT_USER, DEFAULT_PASSWORD);
 	}
 
 	/**
@@ -296,7 +330,7 @@ public final class PostgreSQLConnectionsExtensions
 		final @NonNull String dbPassword, final @NonNull String characterSet,
 		final @NonNull String collate) throws SQLException, ClassNotFoundException
 	{
-		return newDatabase(hostname, POSTGRESQL_PORT, databaseName, dbUser, dbPassword,
+		return newDatabase(hostname, DEFAULT_POSTGRESQL_PORT, databaseName, dbUser, dbPassword,
 			characterSet, collate);
 	}
 
@@ -406,8 +440,8 @@ public final class PostgreSQLConnectionsExtensions
 		final @NonNull String databaseName, final @NonNull String dbUser,
 		final @NonNull String dbPassword) throws SQLException, ClassNotFoundException
 	{
-		return PostgreSQLConnectionsExtensions.newDatabase(hostname, POSTGRESQL_PORT, databaseName,
-			dbUser, dbPassword);
+		return PostgreSQLConnectionsExtensions.newDatabase(hostname, DEFAULT_POSTGRESQL_PORT,
+			databaseName, dbUser, dbPassword);
 	}
 
 	/**
@@ -428,8 +462,8 @@ public final class PostgreSQLConnectionsExtensions
 	public static CreationState newDatabase(final @NonNull String hostname,
 		final @NonNull String databaseName) throws SQLException, ClassNotFoundException
 	{
-		return PostgreSQLConnectionsExtensions.newDatabase(hostname, databaseName,
-			POSTGRESQL_DEFAULT_USER, POSTGRESQL_DEFAULT_USER);
+		return PostgreSQLConnectionsExtensions.newDatabase(hostname, databaseName, DEFAULT_USER,
+			DEFAULT_USER);
 	}
 
 

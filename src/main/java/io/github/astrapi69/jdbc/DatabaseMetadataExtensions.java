@@ -30,11 +30,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import lombok.experimental.UtilityClass;
-
 import org.springframework.jdbc.support.DatabaseMetaDataCallback;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.jdbc.support.MetaDataAccessException;
+
+import lombok.experimental.UtilityClass;
 
 /**
  * The class {@link DatabaseMetadataExtensions} holds algorithms for provide data from the

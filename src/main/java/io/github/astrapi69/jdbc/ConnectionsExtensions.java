@@ -25,6 +25,8 @@
 package io.github.astrapi69.jdbc;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -34,8 +36,8 @@ import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 /**
- * The class {@link ConnectionsExtensions} have convenience methods to create and connect to mysql,
- * H2 or postgresql databases.
+ * The class {@link ConnectionsExtensions} have convenience methods to create and connect to a
+ * database like mysql, H2, hsqldb, sqlite or postgresql
  *
  * @author Asterios Raptis
  */
@@ -92,6 +94,47 @@ public final class ConnectionsExtensions
 	}
 
 	/**
+	 * Execute the sql script from a file
+	 *
+	 * @param sqlScript
+	 *            the sql script file
+	 * @param connection
+	 *            the connection
+	 * @param log
+	 *            the flag if it will be logged.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 */
+	public static void executeSqlScript(final @NonNull File sqlScript,
+		final @NonNull Connection connection, final boolean log) throws IOException, SQLException
+	{
+		BufferedReader bufferedReader = new BufferedReader(new FileReader(sqlScript));
+		ConnectionsExtensions.executeSqlScript(bufferedReader, connection, log);
+	}
+
+	/**
+	 * Execute the sql script from a file
+	 *
+	 * @param sqlScript
+	 *            the sql script file
+	 * @param connection
+	 *            the connection
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 */
+	public static void executeSqlScript(final @NonNull File sqlScript,
+		final @NonNull Connection connection) throws IOException, SQLException
+	{
+		ConnectionsExtensions.executeSqlScript(sqlScript, connection, false);
+	}
+
+	/**
 	 * Execute the sql script given as String object.
 	 *
 	 * @param sqlScript
@@ -124,26 +167,26 @@ public final class ConnectionsExtensions
 	public static void executeSqlScript(final @NonNull Connection connection,
 		final @NonNull String sqlScript, final boolean log) throws SQLException
 	{
-		final String[] inst = sqlScript.split(";");
+		final String[] sqlStatements = sqlScript.split(";");
 		try (Statement st = connection.createStatement())
 		{
 			if (log)
 			{
-				for (final String inst1 : inst)
+				for (final String sqlStatement : sqlStatements)
 				{
-					if (!inst1.trim().equals(""))
+					if (!sqlStatement.trim().isEmpty())
 					{
-						st.executeUpdate(inst1);
+						st.executeUpdate(sqlStatement);
 					}
 				}
 			}
 			else
 			{
-				for (final String inst1 : inst)
+				for (final String sqlStatement : sqlStatements)
 				{
-					if (!inst1.trim().equals(""))
+					if (!sqlStatement.trim().isEmpty())
 					{
-						st.executeUpdate(inst1);
+						st.executeUpdate(sqlStatement);
 					}
 				}
 			}

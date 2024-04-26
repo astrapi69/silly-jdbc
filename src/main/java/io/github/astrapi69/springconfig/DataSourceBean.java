@@ -24,11 +24,21 @@
  */
 package io.github.astrapi69.springconfig;
 
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import io.github.astrapi69.jdbc.h2.H2ConnectionsExtensions;
+import io.github.astrapi69.jdbc.hsqldb.HyperSQLExtensions;
+import io.github.astrapi69.jdbc.mysql.MySqlConnectionsExtensions;
+import io.github.astrapi69.jdbc.postgresql.PostgreSQLConnectionsExtensions;
+import io.github.astrapi69.jdbc.sqlite.SqliteExtensions;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
 /**
@@ -42,9 +52,53 @@ import lombok.experimental.FieldDefaults;
 public class DataSourceBean
 {
 
-	/** The default h2 builder as start point to build a new DataSourceBean. */
+	/** The default H2 builder as start point to build a new DataSourceBean. */
 	public static final DataSourceBean DEFAULT_H2_BUILDER = DataSourceBean.builder()
-		.driverClassName("org.h2.Driver").username("sa").password("").build();
+		.driverClassName(H2ConnectionsExtensions.DRIVER_NAME)
+		.username(H2ConnectionsExtensions.DEFAULT_USER)
+		.password(H2ConnectionsExtensions.DEFAULT_PASSWORD).build();
+
+	/** The default HyperSQL builder as start point to build a new DataSourceBean. */
+	public static final DataSourceBean DEFAULT_HSQLDB_BUILDER = DataSourceBean.builder()
+		.driverClassName(HyperSQLExtensions.DRIVER_NAME).username(HyperSQLExtensions.DEFAULT_USER)
+		.password(HyperSQLExtensions.DEFAULT_PASSWORD).build();
+
+	/** The default sqlite builder as start point to build a new DataSourceBean. */
+	public static final DataSourceBean DEFAULT_SQLLITE_BUILDER = DataSourceBean.builder()
+		.driverClassName(SqliteExtensions.DRIVER_NAME).username(SqliteExtensions.DEFAULT_USER)
+		.password(SqliteExtensions.DEFAULT_PASSWORD).build();
+
+	/** The default PostgreSQL builder as start point to build a new DataSourceBean. */
+	public static final DataSourceBean DEFAULT_POSTGRESQL_BUILDER = DataSourceBean.builder()
+		.driverClassName(PostgreSQLConnectionsExtensions.DRIVER_NAME)
+		.username(PostgreSQLConnectionsExtensions.DEFAULT_USER)
+		.password(PostgreSQLConnectionsExtensions.DEFAULT_PASSWORD).build();
+
+	/** The default MySQL builder as start point to build a new DataSourceBean. */
+	public static final DataSourceBean DEFAULT_MYSQL_BUILDER = DataSourceBean.builder()
+		.driverClassName(MySqlConnectionsExtensions.DRIVER_NAME)
+		.username(MySqlConnectionsExtensions.DEFAULT_USER)
+		.password(MySqlConnectionsExtensions.DEFAULT_PASSWORD).build();
+
+	/** The default H2 {@link DataSource} with the default values */
+	public static final DataSource DEFAULT_H2_DATA_SOURCE = DataSourceBean
+		.newDataSource(DEFAULT_H2_BUILDER.toBuilder().build());
+
+	/** The default HyperSQL {@link DataSource} with the default values */
+	public static final DataSource DEFAULT_HSQLDB_DATA_SOURCE = DataSourceBean
+		.newDataSource(DEFAULT_HSQLDB_BUILDER.toBuilder().build());
+
+	/** The default sqlite {@link DataSource} with the default values */
+	public static final DataSource DEFAULT_SQLLITE_DATA_SOURCE = DataSourceBean
+		.newDataSource(DEFAULT_SQLLITE_BUILDER.toBuilder().build());
+
+	/** The default PostgreSQL {@link DataSource} with the default values */
+	public static final DataSource DEFAULT_POSTGRESQL_DATA_SOURCE = DataSourceBean
+		.newDataSource(DEFAULT_POSTGRESQL_BUILDER.toBuilder().build());
+
+	/** The default MySQL {@link DataSource} with the default values */
+	public static final DataSource DEFAULT_MYSQL_DATA_SOURCE = DataSourceBean
+		.newDataSource(DEFAULT_MYSQL_BUILDER.toBuilder().build());
 
 	/** The driver class name. */
 	String driverClassName;
@@ -57,4 +111,24 @@ public class DataSourceBean
 
 	/** The username. */
 	String username;
+
+	/**
+	 * Factory method for create a new {@link DataSource} object from the given
+	 * {@link DataSourceBean} object
+	 * 
+	 * @param dataSourceBean
+	 *            the {@link DataSourceBean} object
+	 * @return the new created {@link DataSource} object from the given {@link DataSourceBean}
+	 *         object
+	 */
+	public static DataSource newDataSource(final @NonNull DataSourceBean dataSourceBean)
+	{
+		final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName(dataSourceBean.getDriverClassName());
+		dataSource.setUrl(dataSourceBean.getUrl());
+		dataSource.setUsername(dataSourceBean.getUsername());
+		dataSource.setPassword(dataSourceBean.getPassword());
+		return dataSource;
+	}
+
 }

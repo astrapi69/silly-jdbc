@@ -2,12 +2,13 @@
 
 <div style="text-align: center">
 
-[![Build Status](https://api.travis-ci.com/astrapi69/silly-jdbc.svg?branch=develop)](https://api.travis-ci.com/github/astrapi69/silly-jdbc) 
-[![Coverage Status](https://coveralls.io/repos/github/astrapi69/silly-jdbc/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/silly-jdbc?branch=develop) 
-[![Open Issues](https://img.shields.io/github/issues/astrapi69/silly-jdbc.svg?style=flat)](https://github.com/astrapi69/silly-jdbc/issues) 
+[![Java CI with Gradle](https://github.com/astrapi69/silly-jdbc/actions/workflows/gradle.yml/badge.svg)](https://github.com/astrapi69/silly-jdbc/actions/workflows/gradle.yml)
+[![Open Issues](https://img.shields.io/github/issues/astrapi69/silly-jdbc.svg?style=flat)](https://github.com/astrapi69/silly-jdbc/issues)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/silly-jdbc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/silly-jdbc)
 [![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/silly-jdbc.svg)](http://www.javadoc.io/doc/io.github.astrapi69/silly-jdbc)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](http://opensource.org/licenses/MIT)
+[![Donate](https://img.shields.io/badge/donate-❤-ff2244.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GVBTWLRAZ7HB8)
+[![Hits Of Code](https://hitsofcode.com/github/astrapi69/silly-jdbc?branch=develop)](https://hitsofcode.com/github/astrapi69/silly-jdbc/view?branch=develop)
 
 </div>
 
@@ -22,22 +23,25 @@ Utility library for connect to and get metadata from a database
 
 ## gradle dependency
 
+Replace the variable ${latestVersion} with the current latest
+version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/silly-jdbc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/silly-jdbc)
+
 Add the following gradle dependency to your project `build.gradle` in the dependencies section if
 you want to import the core functionality of silly-jdbc:
 
 
 define version in file gradle.properties
 ```
-sillyJdbcVersion=5.9
+sillyJdbcVersion=${latestVersion}
 ```
 
 or in build.gradle ext area
 
 ```
 ext {
-			...
-    sillyJdbcVersion = '5.9'
-			...
+            ...
+    sillyJdbcVersion = '${latestVersion}'
+            ...
 }
 ```
 
@@ -45,9 +49,9 @@ and than add the dependency to the dependencies area
 
 ```
 dependencies {
-			...
-	implementation("io.github.astrapi69:silly-jdbc:$sillyJdbcVersion")
-			...
+            ...
+    implementation("io.github.astrapi69:silly-jdbc:$sillyJdbcVersion")
+            ...
 }
 ```
 
@@ -60,23 +64,23 @@ Add the following maven dependency to your project `pom.xml` if you want to impo
 
 Than you can add the dependency to your dependencies:
 
-	<properties>
-			...
-		<!-- SILLY-JDBC version -->
-		<silly-jdbc.version>5.9</silly-jdbc.version>
-			...
-	</properties>
-			...
-		<dependencies>
-			...
-			<!-- SILLY-JDBC DEPENDENCY -->
-			<dependency>
-				<groupId>io.github.astrapi69</groupId>
-				<artifactId>silly-jdbc</artifactId>
-				<version>${silly-jdbc.version}</version>
-			</dependency>
-			...
-		</dependencies>
+    <properties>
+            ...
+        <!-- SILLY-JDBC version -->
+        <silly-jdbc.version>${latestVersion}</silly-jdbc.version>
+            ...
+    </properties>
+            ...
+        <dependencies>
+            ...
+            <!-- SILLY-JDBC DEPENDENCY -->
+            <dependency>
+                <groupId>io.github.astrapi69</groupId>
+                <artifactId>silly-jdbc</artifactId>
+                <version>${silly-jdbc.version}</version>
+            </dependency>
+            ...
+        </dependencies>
 
 # Donations
 
@@ -177,22 +181,10 @@ Do not hesitate to contact the silly-jdbc developers with your questions, concer
 
 ## Credits
 
-|**Travis CI**|
-|     :---:      |
-|[![Travis CI](https://travis-ci.com/images/logos/TravisCI-Full-Color.png)](https://coveralls.io/github/astrapi69/silly-jdbc?branch=master)|
-|Special thanks to [Travis CI](https://travis-ci.org) for providing a free continuous integration service for open source projects|
-|     <img width=1000/>     |
-
 |**Nexus Sonatype repositories**|
 |     :---:      |
 |[![sonatype repository](https://img.shields.io/nexus/r/https/oss.sonatype.org/io.github.astrapi69/silly-jdbc.svg?style=for-the-badge)](https://oss.sonatype.org/index.html#nexus-search;gav~io.github.astrapi69~silly-jdbc~~~)|
 |Special thanks to [sonatype repository](https://www.sonatype.com) for providing a free maven repository service for open source projects|
-|     <img width=1000/>     |
-
-|**coveralls.io**|
-|     :---:      |
-|[![Coverage Status](https://coveralls.io/repos/github/astrapi69/silly-jdbc/badge.svg?branch=develop)](https://coveralls.io/github/astrapi69/silly-jdbc?branch=master)|
-|Special thanks to [coveralls.io](https://coveralls.io) for providing a free code coverage for open source projects|
 |     <img width=1000/>     |
 
 |**javadoc.io**|
@@ -200,4 +192,3 @@ Do not hesitate to contact the silly-jdbc developers with your questions, concer
 |[![Javadocs](http://www.javadoc.io/badge/io.github.astrapi69/silly-jdbc.svg)](http://www.javadoc.io/doc/io.github.astrapi69/silly-jdbc)|
 |Special thanks to [javadoc.io](http://www.javadoc.io) for providing a free javadoc documentation for open source projects|
 |     <img width=1000/>     |
-

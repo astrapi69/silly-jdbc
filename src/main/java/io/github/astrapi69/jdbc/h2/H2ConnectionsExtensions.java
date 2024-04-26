@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.jdbc;
+package io.github.astrapi69.jdbc.h2;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,10 +43,16 @@ public final class H2ConnectionsExtensions
 
 	/** H2-database constants. */
 	/** Constant for the drivername from H2-database. */
-	public static final String DRIVERNAME = "org.h2.Driver";
+	public static final String DRIVER_NAME = "org.h2.Driver";
 
 	/** Constant for the urlprefix from H2-database. */
-	public static final String URL_PREFIX = "jdbc:h2";
+	public static final String URL_PREFIX = "jdbc:h2:";
+
+	/** Constant for the default user from H2-database. */
+	public static final String DEFAULT_USER = "sa";
+
+	/** Constant for the default password from H2-database. */
+	public static final String DEFAULT_PASSWORD = "";
 
 	/**
 	 * Gets the H2 connection.
@@ -70,9 +76,32 @@ public final class H2ConnectionsExtensions
 		final @NonNull String databaseName, final @NonNull String dbuser,
 		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
 	{
-		final String url = URL_PREFIX + ":" + path + databaseName;
-		Class.forName(DRIVERNAME);
+		String slashIfMissing = !path.endsWith("/") ? "/" : "";
+		String directoryPath = path + slashIfMissing;
+		final String url = URL_PREFIX + directoryPath + databaseName;
+		Class.forName(DRIVER_NAME);
 		return DriverManager.getConnection(url, dbuser, dbpasswort);
+	}
+
+	/**
+	 * Gets the H2 connection with the given path, database name, the default user and the default
+	 * password
+	 *
+	 * @param path
+	 *            the path
+	 * @param databaseName
+	 *            the database name
+	 * @return the H2 connection
+	 * @throws ClassNotFoundException
+	 *             is thrown if the Class was not found or could not be located.
+	 * @throws SQLException
+	 *             is thrown if a database access error occurs or this method is called on a closed
+	 *             connection
+	 */
+	public static Connection getConnection(final @NonNull String path,
+		final @NonNull String databaseName) throws ClassNotFoundException, SQLException
+	{
+		return getConnection(path, databaseName, DEFAULT_USER, DEFAULT_PASSWORD);
 	}
 
 }

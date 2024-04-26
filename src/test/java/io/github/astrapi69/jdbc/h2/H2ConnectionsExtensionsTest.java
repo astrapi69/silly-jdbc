@@ -22,17 +22,22 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.jdbc;
+package io.github.astrapi69.jdbc.h2;
 
-import static org.testng.AssertJUnit.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.meanbean.factories.ObjectCreationException;
-import org.meanbean.test.BeanTestException;
-import org.meanbean.test.BeanTester;
-import org.testng.annotations.Test;
+import org.h2.tools.Server;
+import org.junit.jupiter.api.Test;
+
+import io.github.astrapi69.file.create.FileFactory;
+import io.github.astrapi69.file.delete.DeleteFileExtensions;
+import io.github.astrapi69.file.search.PathFinder;
+import io.github.astrapi69.jdbc.ConnectionsExtensions;
 
 /**
  * The unit test class for the class {@link ConnectionsExtensions}.
@@ -48,32 +53,32 @@ public class H2ConnectionsExtensionsTest
 	 * @throws SQLException
 	 *             is thrown if a database access error occurs or this method is called on a closed
 	 *             connection
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
-	@Test(enabled = false)
-	public void testGetH2Connection() throws ClassNotFoundException, SQLException
+	@Test
+	public void testGetH2Connection() throws ClassNotFoundException, SQLException, IOException
 	{
 		String path;
 		String databaseName;
 		String dbuser;
 		String dbpasswort;
 		Connection connection;
-
-		path = "file:~/";
+		File databaseFile;
+		File srcTestResourcesDir = PathFinder.getSrcTestResourcesDir();
+		path = srcTestResourcesDir.getAbsolutePath();
 		databaseName = "resourcebundles";
 		dbuser = "sa";
 		dbpasswort = "";
+		Server server = H2Launcher.newServer();
+		H2Launcher.start(server);
 		connection = H2ConnectionsExtensions.getConnection(path, databaseName, dbuser, dbpasswort);
 		assertNotNull(connection);
-	}
-
-	/**
-	 * Test method for {@link ConnectionsExtensions}
-	 */
-	@Test(expectedExceptions = { BeanTestException.class, ObjectCreationException.class })
-	public void testWithBeanTester()
-	{
-		final BeanTester beanTester = new BeanTester();
-		beanTester.testBean(ConnectionsExtensions.class);
+		H2Launcher.stop(server);
+		// clean up
+		// create temporary directory for database file ...
+		databaseFile = FileFactory.newFile(srcTestResourcesDir, databaseName + ".mv.db");
+		DeleteFileExtensions.delete(databaseFile);
 	}
 
 }

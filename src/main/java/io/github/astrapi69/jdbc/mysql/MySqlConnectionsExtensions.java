@@ -22,7 +22,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package io.github.astrapi69.jdbc;
+package io.github.astrapi69.jdbc.mysql;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -33,6 +33,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.astrapi69.jdbc.CreationState;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -48,13 +49,22 @@ public final class MySqlConnectionsExtensions
 
 	/** MySQL-database constants. */
 	/** Constant for the drivername from MySQL-database. */
-	public static final String DRIVERNAME = "com.mysql.jdbc.Driver";
+	public static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
 
 	/** Constant for the urlprefix from MySQL-database. */
 	public static final String URL_PREFIX = "jdbc:mysql://";
 
 	/** Constant for the default port where the MySQL-database listen. */
 	public static final int MYSQL_PORT = 3306;
+
+	/** Constant for the default user from MySQL-database. */
+	public static final String DEFAULT_HOST = "localhost";
+
+	/** Constant for the default user from MySQL-database. */
+	public static final String DEFAULT_USER = "root";
+
+	/** Constant for the default password from MySQL-database. */
+	public static final String DEFAULT_PASSWORD = "root";
 
 	/**
 	 * Checks if the given database exists in the MySqlDatabase.
@@ -124,7 +134,7 @@ public final class MySqlConnectionsExtensions
 		final @NonNull String dbpasswort) throws ClassNotFoundException, SQLException
 	{
 		final String url = URL_PREFIX + hostname + ":" + portNumber + "/" + databaseName;
-		Class.forName(DRIVERNAME);
+		Class.forName(DRIVER_NAME);
 		return DriverManager.getConnection(url, dbuser, dbpasswort);
 	}
 

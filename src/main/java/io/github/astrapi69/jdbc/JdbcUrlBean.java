@@ -26,6 +26,11 @@ package io.github.astrapi69.jdbc;
 
 import java.util.List;
 
+import io.github.astrapi69.jdbc.h2.H2ConnectionsExtensions;
+import io.github.astrapi69.jdbc.hsqldb.HyperSQLExtensions;
+import io.github.astrapi69.jdbc.mysql.MySqlConnectionsExtensions;
+import io.github.astrapi69.jdbc.postgresql.PostgreSQLConnectionsExtensions;
+import io.github.astrapi69.jdbc.sqlite.SqliteExtensions;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,16 +48,33 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class JdbcUrlBean
+public class JdbcUrlBean implements Cloneable
 {
+
+	/** The default builder for the H2 jdbc url. */
+	public static final JdbcUrlBean DEFAULT_H2_URL = JdbcUrlBean.builder()
+		.protocol(H2ConnectionsExtensions.URL_PREFIX).build();
+
+	/** The default builder for the HyperSQL jdbc url. */
+	public static final JdbcUrlBean DEFAULT_HSQLDB_URL = JdbcUrlBean.builder()
+		.protocol(HyperSQLExtensions.URL_PREFIX).build();
+
+	/** The default builder for the sqlite jdbc url. */
+	public static final JdbcUrlBean DEFAULT_SQLITE_URL = JdbcUrlBean.builder()
+		.protocol(SqliteExtensions.URL_PREFIX).build();
 
 	/** The default builder for the mysql jdbc url. */
 	public static final JdbcUrlBean DEFAULT_MYSQL_URL = JdbcUrlBean.builder()
-		.protocol("jdbc:mysql://").host("localhost").port(3306).build();
+		.protocol(MySqlConnectionsExtensions.URL_PREFIX)
+		.host(MySqlConnectionsExtensions.DEFAULT_HOST).port(MySqlConnectionsExtensions.MYSQL_PORT)
+		.build();
 
 	/** The default builder for the postgresql jdbc url. */
 	public static final JdbcUrlBean DEFAULT_POSTGRESQL_URL = JdbcUrlBean.builder()
-		.protocol("jdbc:postgresql://").host("localhost").port(5432).build();
+		.protocol(PostgreSQLConnectionsExtensions.URL_PREFIX)
+		.host(PostgreSQLConnectionsExtensions.DEFAULT_HOST)
+		.port(PostgreSQLConnectionsExtensions.DEFAULT_POSTGRESQL_PORT).build();
+
 	/** The database. */
 	String database;
 	/** The host. */
@@ -64,6 +86,29 @@ public class JdbcUrlBean
 	int port;
 	/** The protocol. */
 	String protocol;
+	/** The protocol identifier of the database. This is only for some databases like hsqldb */
+	String protocolIdentifier;
+
+	/**
+	 * Builds a H2 jdbc url with the given {@link JdbcUrlBean} object.
+	 *
+	 * @param bean
+	 *            the bean
+	 * @return the string
+	 */
+	public static String newH2JdbcUrl(final JdbcUrlBean bean)
+	{
+		final StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(bean.getProtocol()).append(bean.getDatabase());
+		if (bean.getParameters() != null && !bean.getParameters().isEmpty())
+		{
+			for (final String parameter : bean.getParameters())
+			{
+				stringBuilder.append(";").append(parameter);
+			}
+		}
+		return stringBuilder.toString();
+	}
 
 	/**
 	 * Builds a default mysql jdbc url with the given database.
@@ -92,24 +137,25 @@ public class JdbcUrlBean
 	}
 
 	/**
-	 * Builds a H2 jdbc url with the given {@link JdbcUrlBean} object.
+	 * Builds a HyperSQL jdbc url with the given {@link JdbcUrlBean} object.
 	 *
 	 * @param bean
 	 *            the bean
 	 * @return the string
 	 */
-	public static String newH2JdbcUrl(final JdbcUrlBean bean)
+	public static String newHsqldbJdbcUrl(final JdbcUrlBean bean)
 	{
-		final StringBuilder sb = new StringBuilder();
-		sb.append(bean.getProtocol()).append(bean.getDatabase());
+		final StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(bean.getProtocol()).append(bean.getProtocolIdentifier()).append(":")
+			.append(bean.getDatabase());
 		if (bean.getParameters() != null && !bean.getParameters().isEmpty())
 		{
 			for (final String parameter : bean.getParameters())
 			{
-				sb.append(";").append(parameter);
+				stringBuilder.append(";").append(parameter);
 			}
 		}
-		return sb.toString();
+		return stringBuilder.toString();
 	}
 
 	/**
@@ -138,10 +184,19 @@ public class JdbcUrlBean
 
 	public static String buildUrlString(JdbcUrlBean bean)
 	{
-		final StringBuilder sb = new StringBuilder();
-		sb.append(bean.getProtocol()).append(bean.getHost()).append(":").append(bean.getPort())
-			.append("/").append(bean.getDatabase());
-		return sb.toString();
+		final StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(bean.getProtocol()).append(bean.getHost()).append(":")
+			.append(bean.getPort()).append("/").append(bean.getDatabase());
+		return stringBuilder.toString();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Object clone() throws CloneNotSupportedException
+	{
+		return this.toBuilder().build();
 	}
 
 }
