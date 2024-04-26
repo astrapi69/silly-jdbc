@@ -23,13 +23,16 @@ Utility library for connect to and get metadata from a database
 
 ## gradle dependency
 
+Replace the variable ${latestVersion} with the current latest
+version: [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/silly-jdbc/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.astrapi69/silly-jdbc)
+
 Add the following gradle dependency to your project `build.gradle` in the dependencies section if
 you want to import the core functionality of silly-jdbc:
 
 
 define version in file gradle.properties
 ```
-sillyJdbcVersion=5.9
+sillyJdbcVersion=${latestVersion}
 ```
 
 or in build.gradle ext area
@@ -37,7 +40,7 @@ or in build.gradle ext area
 ```
 ext {
             ...
-    sillyJdbcVersion = '5.9'
+    sillyJdbcVersion = '${latestVersion}'
             ...
 }
 ```
@@ -64,7 +67,7 @@ Than you can add the dependency to your dependencies:
     <properties>
             ...
         <!-- SILLY-JDBC version -->
-        <silly-jdbc.version>5.9</silly-jdbc.version>
+        <silly-jdbc.version>${latestVersion}</silly-jdbc.version>
             ...
     </properties>
             ...
