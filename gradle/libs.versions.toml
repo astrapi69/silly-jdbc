@@ -5,61 +5,61 @@
 ###########################
 # gradle-plugins versions #
 ###########################
-lombok-plugin="8.6"
-gradle-versions-plugin="0.51.0"
-license-gradle-plugin="0.16.1"
-grgit-gradle="5.2.2"
-spotless-plugin-gradle="6.25.0"
+lombok-plugin-version="8.6"
+gradle-versions-plugin-version="0.51.0"
+license-gradle-plugin-version="0.16.1"
+grgit-gradle-version="5.2.2"
+spotless-plugin-gradle-version="6.25.0"
 #########################
 # dependencies versions #
 #########################
-lombok="1.18.32"
-spring-orm="6.1.6"
-spring-context="6.1.6"
+lombok-version="1.18.32"
+spring-orm-version="6.1.6"
+spring-context-version="6.1.6"
 ##############################
 # test dependencies versions #
 ##############################
-file-worker="17.1"
-derby="10.17.1.0"
-sqlite-jdbc="3.45.3.0"
-hsqldb="2.7.2"
-h2="2.2.224"
-postgresql="42.7.3"
-mysql-connector-java="8.0.33"
-meanbean="3.0.0-M9"
-junit-jupiter="5.11.0-M1"
-junit-platform-launcher="1.11.0-M1"
+file-worker-version="17.1"
+derby-version="10.17.1.0"
+sqlite-jdbc-version="3.45.3.0"
+hsqldb-version="2.7.2"
+h2-version="2.2.224"
+postgresql-version="42.7.3"
+mysql-connector-java-version="8.0.33"
+meanbean-version="3.0.0-M9"
+junit-jupiter-version="5.11.0-M1"
+junit-platform-launcher-version="1.11.0-M1"
 
 ##################
 # gradle-plugins #
 ##################
 [plugins]
-lombok-plugin = { id = "io.freefair.lombok", version.ref = "lombok-plugin"}
-gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions-plugin" }
-license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "license-gradle-plugin"}
-grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "grgit-gradle"}
-spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "spotless-plugin-gradle"}
+lombok-plugin = { id = "io.freefair.lombok", version.ref = "lombok-plugin-version"}
+gradle-versions-plugin = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions-plugin-version" }
+license-gradle-plugin = { id = "com.github.hierynomus.license", version.ref = "license-gradle-plugin-version"}
+grgit-gradle = { id = "org.ajoberstar.grgit", version.ref = "grgit-gradle-version"}
+spotless-plugin-gradle = { id = "com.diffplug.spotless", version.ref = "spotless-plugin-gradle-version"}
 
 [libraries]
 ##########################
 # dependencies libraries #
 ##########################
-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok"}
-spring-orm = { module = "org.springframework:spring-orm", version.ref = "spring-orm"}
-spring-context = { module = "org.springframework:spring-context", version.ref = "spring-context"}
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok-version"}
+spring-orm = { module = "org.springframework:spring-orm", version.ref = "spring-orm-version"}
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring-context-version"}
 ###############################
 # test dependencies libraries #
 ###############################
-file-worker = { module = "io.github.astrapi69:file-worker", version.ref = "file-worker"}
-derby = { module = "org.apache.derby:derby", version.ref = "derby"}
-sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc"}
-hsqldb = { module = "org.hsqldb:hsqldb", version.ref = "hsqldb"}
-h2 = { module = "com.h2database:h2", version.ref = "h2"}
-postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql"}
-mysql-connector-java = { module = "mysql:mysql-connector-java", version.ref = "mysql-connector-java"}
-meanbean = { module = "com.github.meanbeanlib:meanbean", version.ref = "meanbean"}
-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter"}
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher"}
+file-worker = { module = "io.github.astrapi69:file-worker", version.ref = "file-worker-version"}
+derby = { module = "org.apache.derby:derby", version.ref = "derby-version"}
+sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite-jdbc-version"}
+hsqldb = { module = "org.hsqldb:hsqldb", version.ref = "hsqldb-version"}
+h2 = { module = "com.h2database:h2", version.ref = "h2-version"}
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql-version"}
+mysql-connector-java = { module = "mysql:mysql-connector-java", version.ref = "mysql-connector-java-version"}
+meanbean = { module = "com.github.meanbeanlib:meanbean", version.ref = "meanbean-version"}
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter-version"}
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher-version"}
 
 [bundles]
 unit-testing = ["junit-jupiter", "meanbean"]
