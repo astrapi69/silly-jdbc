@@ -1,7 +1,7 @@
 ## Change log
 ----------------------
 
-Version 6.1-SNAPSHOT
+Version 6.1
 -------------
 
 ## Updates Summary
@@ -22,7 +22,6 @@ Version 6.1-SNAPSHOT
 - **JUnit Jupiter:** `5.11.0-M1` → `5.11.3`
 - **JUnit Platform Launcher:** `1.11.0-M1` → `1.11.3`
 - **PostgreSQL JDBC Driver:** `42.7.3` → `42.7.4`
-- **Log4j Core:** `2.17.1` → `3.0.0-beta3`
 - **Lombok Library:** `1.18.32` → `1.18.36`
 - **Spring Context:** `6.1.6` → `6.2.0`
 - **Spring ORM:** `6.1.6` → `6.2.0`
