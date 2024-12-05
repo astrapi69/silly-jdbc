@@ -45,7 +45,7 @@ public class DatabaseMetadataExtensions
 {
 
 	/** The Constant Callback for get the Table Names from the DatabaseMetaData */
-	private final static DatabaseMetaDataCallback getTableNamesDatabaseMetaDataCallback = dbmd -> {
+	private final static DatabaseMetaDataCallback<?> getTableNamesDatabaseMetaDataCallback = dbmd -> {
 		List<String> tables = new ArrayList<>();
 		try (
 			ResultSet rs = dbmd.getTables(dbmd.getUserName(), null, null, new String[] { "TABLE" }))

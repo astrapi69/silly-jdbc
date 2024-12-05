@@ -1,6 +1,36 @@
 ## Change log
 ----------------------
 
+Version 6.1
+-------------
+
+## Updates Summary
+
+### Dependencies Updated to Latest Versions:
+- **MySQL Connector Java:** `8.0.33` (latest milestone)
+- **JaCoCo Ant:** `0.8.11` (latest milestone)
+- **Apache Derby:** `10.17.1.0` (latest milestone)
+- **Gradle Plugins:**
+    - **Spotless Plugin:** `7.0.0.BETA4`
+    - **Ben Manes Versions Plugin:** `0.51.0`
+    - **Ajoberstar Grgit Plugin:** `5.3.0`
+    - **NL Little Robots Version Catalog Update Plugin:** `0.8.5`
+
+### Dependencies with Newer Versions Available:
+- **H2 Database:** `2.2.224` → `2.3.232`
+- **File Worker Library:** `17.1` → `19.0`
+- **JUnit Jupiter:** `5.11.0-M1` → `5.11.3`
+- **JUnit Platform Launcher:** `1.11.0-M1` → `1.11.3`
+- **PostgreSQL JDBC Driver:** `42.7.3` → `42.7.4`
+- **Lombok Library:** `1.18.32` → `1.18.36`
+- **Spring Context:** `6.1.6` → `6.2.0`
+- **Spring ORM:** `6.1.6` → `6.2.0`
+- **SQLite JDBC Driver:** `3.45.3.0` → `3.47.1.0`
+
+### Gradle Updates:
+- **Current version:** `8.7`
+- **Latest release candidate:** `8.11.1`
+
 Version 6
 -------------
 
